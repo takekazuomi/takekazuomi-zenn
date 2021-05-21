@@ -1,5 +1,5 @@
 ---
-title: "bicepを使おう"
+title: "ARM Tempate DSL、bicep を使おう"
 emoji: "💪"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["azure", "arm", "bicep"]
