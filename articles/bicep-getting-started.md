@@ -3,7 +3,7 @@ title: "bicepを使おう"
 emoji: "💪"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["azure", "arm", "bicep"]
-published: false
+published: true
 ---
 
 [bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/bicep-overview) は、[ARM Template](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/) を書き安くするためのDSLだ。ARM Templateは、低レベル過ぎて手書きは結構辛い。慣れてくると書けるようにはなるが、間違が起こりやすく再利用可能なコードを書くことも難しい。bicepは、この問題をもう少し書きやすいようにした上位の言語を用意しようというのが基本的な発想作られている。これは、JavaScript と TypeScriptの関係に似ている。bicep(=TypeScript)で書くと、ARM template(JavaScript) に展開され、展開後の、ARM template がAzureにデプロイできる。というのが基本的な流れである。ARM Templateに比べると書きやすいが、最終的には ARM Templateにコンパイル（変換）されるので、出来ることはARM Templateに左右される。
