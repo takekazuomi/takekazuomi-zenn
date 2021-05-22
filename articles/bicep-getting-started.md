@@ -32,7 +32,8 @@ VSCode の場合、[bicep 用の dev container](https://github.com/Azure/vscode-
 
 定番の`Hello world` を書いてみる。bicep の dev containerを使うとデフォルトで、Bicep VS Code extension 、[ms-azuretools.vscode-bicep](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) がインストールされ、拡張子`.bicep`のときに、`language mode`が、`bicep`になる。さらに、snippets が登録されていて、それなりに便利だ。[^3]
 bicepでも、基本構造は、ARM Templateと同じで、`paramters`, `variables`, `resources`, `outputs`から構成される。[^4] 例えば、`param` と打てば、snippets の候補が下記のように出る。
-![hello01](https://storage.googleapis.com/zenn-user-upload/q0dgln1qxpjibc6o5v8tspmd5v22)
+
+![hello01](https://storage.googleapis.com/zenn-user-upload/zeckkep9hjl368bol6g4mzkk9ojw)
 
 選択すると、テンプレートコードが展開されるので、それをベースにコードを編集する。
 
@@ -132,7 +133,7 @@ resource sa 'Microsoft.Storage/storageAccounts@2021-02-01' = {
 
 3つ目は、`resource sa 'Microsoft.Storage/storageAccounts@2021-02-01'` のようなAPIバージョンを含めたリソースを宣言だ。bicep の Langage Server では、ARM Template Schemaからtype情報を作って持っている。それをベースにリソースがどのような属性を持っているかをサジェストしてくれる。例えば、下記のように、`'Microsoft.Storage/storageAccounts@2021-02-01'` だと、`kind`、`location`、`name`、`sku` だという表示される。これでかなりコーディングが捗る。[^5]
 
-![sa01](https://storage.googleapis.com/zenn-user-upload/nyi9hizxrfswv1tiv5spb48ekgu7)
+![sa01](https://storage.googleapis.com/zenn-user-upload/gz2wyne73jvbwnu0svtb434th6ih)
 
 ## 最後に
 
