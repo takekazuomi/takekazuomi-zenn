@@ -1,8 +1,8 @@
 ---
-title: "ARM tempate DSL、Bicep を使おう"
+title: "ARM tempate DSL、Bicep を使おう(1)"
 emoji: "💪"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["azure", "arm", "bicep"]
+topics: ["azure", "arm", "bicep", "入門"]
 published: true
 ---
 
@@ -131,14 +131,17 @@ resource sa 'Microsoft.Storage/storageAccounts@2021-02-01' = {
 
 2つ目は、`name: name` や、`location: location` のように、パラメータや変数をそのまま書けることだ。ARM Templateだと`"[variables('name')]"`とか`[parameters('location')]"`のように書く必要があったが、普通に書けるようになった。
 
-3つ目は、`resource sa 'Microsoft.Storage/storageAccounts@2021-02-01'` のようなAPIバージョンを含めたリソースを宣言だ。bicep の Langage Server では、ARM Template Schemaからtype情報を作って持っている。それをベースにリソースがどのような属性を持っているかをサジェストしてくれる。例えば、下記のように、`'Microsoft.Storage/storageAccounts@2021-02-01'` だと、`kind`、`location`、`name`、`sku` だという表示される。これでかなりコーディングが捗る。[^5]
+3つ目は、`resource sa 'Microsoft.Storage/storageAccounts@2021-02-01'` のようなAPIバージョンを含めたリソースを宣言だ。bicep の Langage Server では、ARM Template Schemaからtype情報を作って持っている。それをベースにリソースがどのような属性を持っているかをサジェストしてくれる。例えば、下記のように、`'Microsoft.Storage/storageAccounts@2021-02-01'` だと、`kind`、`location`、`name`、`sku` が必須だという表示がされる。これでかなりコーディングが捗る。[^5]
 
-![sa01](https://storage.googleapis.com/zenn-user-upload/gz2wyne73jvbwnu0svtb434th6ih)
+![sa03](https://storage.googleapis.com/zenn-user-upload/4wesm8par4rq66803aff0malts9f)
 
 ## 最後に
 
-bicep は、ARM Template 直よりは100倍楽に書けｍ記述後の見通しも良い。薄いラッパーなので、トラブルシューティングが楽、Azureの新機能でも、ARM Templateがサポートされていれば、即時 bicep でも使える。例えば、5/1時点で、[Web PubSub](https://azure.microsoft.com/en-us/services/web-pubsub/)は、ARM Templateのドキュメントも無いし、bicep のtype library にも入っていないが、azure-rest-api-specs の[web pubsubの仕様](// https://github.com/Azure/azure-rest-api-specs/tree/master/specification/webpubsub)読みながらbicepで書けば、deploy出来るものが書ける。
+bicep は、ARM Template 直よりは100倍楽に書け記述後の見通しも良く、薄いラッパーなのでトラブルシューティングが楽であるというのが特徴だ。Azureの新機能でも、ARM Templateがサポートされていれば、即時 bicep でも使える。
 
+例えば、5/1時点で、[Web PubSub](https://azure.microsoft.com/en-us/services/web-pubsub/)は、ARM Templateのドキュメントも無いし、bicep のtype library にも入っていないが、azure-rest-api-specs の[web pubsubの仕様](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/webpubsub)を読みながらbicepで書けば、deploy出来るものが書ける。
+
+:::details Web PubSub のbicepコード
 ```yaml:webpubsub.bicep
 param location string = resourceGroup().location
 param name string
@@ -184,15 +187,19 @@ resource name_resource 'Microsoft.SignalRService/WebPubSub@2021-04-01-preview' =
   tags: tags
 }
 ```
+:::
+
+0.3以降は、マイクロソフトの公式サポートが付いた[^6]、ARM Templateを書くなら、bicep を使うのがお勧めだ。
 
 ちなみに、ARM（腕）だから、bicep（上腕二頭筋）らしい。
 
-## 脚注
+---
 
 [^1]: 一部の機能は、実装しないことがを選択しているものもある、[ユーザー定義関数 Issue 2](https://github.com/Azure/bicep/issues/2)、外部テンプレート、outer scopeなど。
 [^2]: dev-containersの元ネタは、 [ここ](https://github.com/microsoft/vscode-dev-containers/tree/v0.166.1/containers/azure-bicep) 。欲しいものが全部入っているわけではないので、ここに適時必要なものをいれる。自分用にカスタマイズした、dev container を[ここ](https://github.com/takekazuomi/devcontainer-bicep)にあげてある。
 [^3]: snippets は[絶賛実装中](https://github.com/Azure/bicep/issues?q=+label%3A%22story%3A+snippets%22)で現時点(0.3.539)で大分良くなった。
 [^4]: ARM Template だと、これに`functions` が入るが、bicepでは未実装。
 [^5]: そもそも、タイプ情報がたりなかったり、bicepでうまく扱えないパターンがあったりで、まだ足りない部分もある。おかしいなと思ったら、[Missing type validation / inaccuracies #784](https://github.com/Azure/bicep/issues/784) を見ると参考になる。
+[^6]: [bicep のFAQ](https://github.com/Azure/bicep#faq)の `Is this ready for production use?` に、`Yes. As of v0.3, Bicep is now supported by Microsoft Support Plans` とある。まだプレビューではあるが、プロダクションに利用できて、 Microsoft Support Plans でサポートされるとある。
 
 
