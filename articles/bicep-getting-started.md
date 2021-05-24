@@ -5,7 +5,7 @@ type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["azure", "arm", "bicep", "入門"]
 published: true
 ---
-
+# 概要
 [bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/bicep-overview) は、[ARM Template](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/) を書き安くするためのDSLだ。ARM Templateは、低レベル過ぎて手書きは結構辛い。慣れてくると書けるようにはなるが、間違が起こりやすく再利用可能なコードを書くことも難しい。bicepは、この問題を構文を単純化し型をサポートした上位の言語を用意することで解決しようという発想で作られている。これは、JavaScript と TypeScript の関係に似ている。bicep(=TypeScript)で書くと、ARM template(JavaScript) に展開され、展開後の、ARM template がAzureにデプロイできる。というのが基本的な流れである。ARM Templateに比べると書きやすいが、最終的には ARM Templateにコンパイル（変換）されるので、出来ることはARM Templateに左右される。
 
 [![pressure gauge](https://live.staticflickr.com/14/17981034_b94b473ea6.jpg)](https://www.flickr.com/photos/takekazuomi/17981034)
@@ -13,7 +13,7 @@ published: true
 近々の開発状況を見ると、3/2 の [Ignite 2021](https://www.youtube.com/watch?v=l85qv_1N2_A)に合わせて 「[0.3.1 loop, existing, new decorators syntax](https://github.com/Azure/bicep/releases/tag/v0.3.1)」が、3/20には 「[0.3.126 loog index, resource/module loop filters](https://github.com/Azure/bicep/releases/tag/v0.3.126)」が、4/10 には 「[0.3.255 var loop](https://github.com/Azure/bicep/releases/tag/v0.3.255)」が、5/15 には、「[0.3.539 visualizer, snippets](https://github.com/Azure/bicep/releases/tag/v0.3.539)」がリリースと概ね月イチでリリースされている。
 3.1以降、ARM Template 直書きじゃないと出来ないことがほとんど無くなり。[^1] 「みんな、そろそろ ARM Template を直書きするのをやめて bicep で書こうぜ」とう感じになってきてる。かれこれ半年ほどプロダクションで使っているので、入門編から書いてみる。
 
-## 準備
+# 準備
 
 bicep が、[az cli](https://docs.microsoft.com/en-us/cli/azure/) と [azure powershell](https://docs.microsoft.com/en-us/powershell/azure/?view=azps-5.9.0) に統合されたので、インストールに関してはあまり面倒なことはない。ここでは、WSL2 ＋ az cli の環境を前提で書いていく。（最近、殆ど開発環境がWSL2上に以降しつつある）
 az cli では、bicep は、extentionで 実装されており、下記のようにインストールするだけで使えるようになる。bicep が更新された場合は、`az bicep upgrade` で最新版が落ちてくる。
@@ -28,7 +28,7 @@ bicep の最も強力な点(=型安全)は、Langage Server を使うと実感�
 
 VSCode の場合、[bicep 用の dev container](https://github.com/Azure/vscode-remote-try-bicep) を使うと快適に書くことができる。適当に新規ディレクトリを作成して、VSCode を開いた後コマンドバレットで`Remote Containers: Open Folder in Container...`して、コンテナとして`Azure Bicep`を選ぶ。初回はここでビルドが走るので少し時間がかかるので少し待つ。[^2] これで環境は出来たので、次は簡単なコードを書いてみよう。
 
-## Hello world
+# Hello world
 
 定番の`Hello world` を書いてみる。bicep の dev containerを使うとデフォルトで、Bicep VS Code extension 、[ms-azuretools.vscode-bicep](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) がインストールされ、拡張子`.bicep`のときに、`language mode`が、`bicep`になる。さらに、snippets が登録されていて、それなりに便利だ。[^3]
 bicepでも、基本構造は、ARM Templateと同じで、`paramters`, `variables`, `resources`, `outputs`から構成される。[^4] 例えば、`param` と打てば、snippets の候補が下記のように出る。
@@ -99,7 +99,7 @@ az bicep build -f hello.bicep
 
 結果を見ると、概ね直接的にARM Templateになっているのがわかる。この場合だと、`string interpolation` は、`format` 関数に展開されるところが少し複雑なぐらいしか見るべき点はない。しかし、変換前後では行数が全然違う。元の2行が24行になる。`metadata` の7行を外しても8倍近く違う。jsonはペイロードとしては使えるが手書きは辛いのがわかる。
 
-## Storage を作る
+# Storage を作る
 
 もう少し実用的な、パラメータでプレフィックスとSKUを指定して、Storage Accountを作成するようなbicepを書いてみよう。
 
@@ -135,7 +135,7 @@ resource sa 'Microsoft.Storage/storageAccounts@2021-02-01' = {
 
 ![sa03](https://storage.googleapis.com/zenn-user-upload/4wesm8par4rq66803aff0malts9f)
 
-## 最後に
+# 最後に
 
 bicep は、ARM Template 直よりは100倍楽に書け記述後の見通しも良く、薄いラッパーなのでトラブルシューティングが楽であるというのが特徴だ。Azureの新機能でも、ARM Templateがサポートされていれば、即時 bicep でも使える。
 
