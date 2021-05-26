@@ -16,7 +16,7 @@ Bicep と、ARM Template は概ね1：1で対応する。ARM Template を習熟�
 2. モジュール化、再利用性の困難性
 3. Azure Resource Provider/Azure Management API の複雑さと不透明性
 
-Bicepでは、１と２の問題を解決している。[^1] 本稿では、その中でも「1. json構文の制限」に注目した。ARM Tempate が json構文を選択した結果、「DSL」が `json` の中に埋め込まれるようになった。これが、冗長で書きづらい結果をもたらしている。`Bicep` では、この文字内でのDSL構文を改訂し、独自の`.bicep` 形式に移行して問題を解決している。本稿では、[前のStorageの例](./articles/bicep-getting-started)を使ってBicepとARM Tempateを対比して解説していく。
+Bicepでは、１と２の問題を解決している。[^1] 本稿では、その中でも「1. json構文の制限」に注目した。ARM Tempate が json構文を選択した結果、「DSL」が `json` の中に埋め込まれるようになった。これが、冗長で書きづらい結果をもたらしている。`Bicep` では、この文字内でのDSL構文を改訂し、独自の`.bicep` 形式に移行して問題を解決している。本稿では、[前のStorageの例](./bicep-getting-started)を使ってBicepとARM Tempateを対比して解説していく。
 
 [![red leaf](https://live.staticflickr.com/65535/49121168526_80689c0490_z.jpg)](https://www.flickr.com/photos/takekazuomi/49121168526)
 
