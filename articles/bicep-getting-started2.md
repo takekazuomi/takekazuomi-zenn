@@ -148,7 +148,7 @@ decorators 構文は、[bicep 0.3.1](https://github.com/Azure/bicep/releases/tag
 
 # 最後に
 
-いろいろ書いて見たが、bicepの概要を知るには、[tutorial](https://github.com/Azure/bicep/tree/v0.3.539/docs/tutorial) をやるのがお勧めだ。それを済ませておけば、必要に応じて[sepc](https://github.com/Azure/bicep/tree/v0.3.539/docs/spec)を見ながら、なんとなく書けるようになる。
+いろいろ書いて見たが、bicepの概要を知るには、[tutorial](https://github.com/Azure/bicep/tree/v0.3.539/docs/tutorial) をやるのがお勧めだ。それを済ませておけば、必要に応じて[sepc](https://github.com/Azure/bicep/tree/v0.3.539/docs/spec)を見ながら、なんとなく書けるようになる。[^6]
 
 慣れてくると、Language Serverのおかげもあって、サクサク書くことが出てきてとても良い。//Build 2021でリリースされるであろう、[Bicep 0.4](https://github.com/Azure/bicep/projects/7) では、Linter も実装され、未使用のパラメータを指摘してくれるなどの小技も効くようになる。
 
@@ -200,3 +200,4 @@ output storageAccountKey string = listKeys(sa.id, sa.apiVersion).keys[0].value
 [^3]: 現行の構文だと改行の有無に左右される部分が少々多く、もっと構文上改行ルールの制限を減らそうという議論が、[Make the language "less" newline sensitive #146](https://github.com/Azure/bicep/issues/146)で進んでいる。例えば、今は配列リテラルでは必ず改行で要素を区切る必要がある [#498](https://github.com/Azure/bicep/issues/498)、また複数に分けて書けない部分もある。
 [^4]: 文字列のエスケープルールは、[ここ](https://github.com/Azure/bicep/blob/main/docs/spec/bicep.md)
 [^5]: Language Server、平たく言うと、 [Bicep VS Code extension](https://github.com/Azure/bicep/blob/main/docs/installing.md#bicep-vs-code-extension)、[neovim](https://github.com/Azure/bicep/issues/1141#issuecomment-749372637)でも動くらしい。
+[^6]: [ARM Template syntax and the native Bicep equivalent](https://github.com/Azure/bicep/blob/main/docs/arm2bicep.md#arm-template-syntax-and-the-native-bicep-equivalent)も参考になる。
