@@ -56,7 +56,7 @@ name: name
 location: location
 ```
 
-json のプロパティ名では、`"`で囲って文字列を書いていたが、`.bicep` では、クオートは必要とせずに、`name`のように書く。また、値は任意のリテラルまたは式で構成する。つまり、`name: name` の後ろの `name` は式として解釈される、これが、`'foobar'` のように書かれていれば文字列リテラルである。ARM Templeteでは、`paramaters` と `variables` は同じ名前空間を使うので、`variables('name')` や、`parameters('location')` のような指定は必要ない。`.bicep` ではシンプルな構文を目指し冗長性を排除して、`variables()`や、`parameters()` の部分を省略する。また、プロパティ間の`,`は必要無く、代わりに改行を書く。[^3]
+json のプロパティ名では、`"`で囲って文字列を書いていたが、`.bicep` では、クオートは必要とせずに、`name`のように書く。また、値は任意のリテラルまたは式で構成する。つまり、`name: name` の後ろの `name` は式として解釈される、これが、`'foobar'` のように書かれていれば文字列リテラルである。ARM Templeteでは、`paramaters` と `variables` は同じ名前空間を使う。つまり、`variables('name')` と、`parameters('name')` を同時に使うことはできない。そのため、使用する場所で `variables()` や、`parameters()` のような指定は必要とせず、`name` のように名前だけを書けば、variables なのか parameter なのかは一意に決まる。`.bicep` ではシンプルな構文を目指し冗長性を排除して、`variables()`や、`parameters()` の部分を省略する。また、プロパティ間の`,`は必要無く、代わりに改行を書く。[^3]
 
 こんな風に、`.bicep` は、シンプルな構文を目指して諸々の工夫をしている。カンマを書かなくて良くなったために最後の要素だけを特別扱いする必要が無くなりコピペにも優しくなった。
 
