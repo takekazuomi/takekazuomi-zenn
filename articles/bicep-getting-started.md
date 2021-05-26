@@ -2,7 +2,7 @@
 title: "ARM tempate DSL、Bicep を使おう(1)"
 emoji: "💪"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["azure", "arm", "bicep", "入門"]
+topics: ["azure", "arm", "bicep", "入門", "bicep入門"]
 published: true
 ---
 # 概要
