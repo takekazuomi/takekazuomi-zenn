@@ -3,7 +3,7 @@ title: "FASTER"
 emoji: "💪"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["algorithm", "faster", "紹介"]
-published: true
+published: false
 ---
 
 

@@ -3,7 +3,7 @@ title: "ARM tempate DSL、Bicep デプロイのベストプラクティス"
 emoji: "💪"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["azure", "arm", "bicep", "応用"]
-published: true
+published: false
 ---
 
 本稿は、Bicepを使ったデプロイのベストプラクティスの考察です。俗にポエムとも言います。
