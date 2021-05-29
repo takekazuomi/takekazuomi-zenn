@@ -45,7 +45,7 @@ resource sa 'Microsoft.Storage/storageAccounts@2021-02-01' = {
 ARM Template だと、jsonの値部分の文字列に`[]` で囲んで式を埋め込んでいた。例えば、`parameters`や、`variables` で定義された値にアクセスする場合は、下記のように書くことになる。文字列の中に式を埋め込んで、json 値を拡張するという実装だ。[^2]
 
 ```json
-"name": "[variables('name')]",a
+"name": "[variables('name')]",
 "location": "[parameters('location')]",
 ```
 
