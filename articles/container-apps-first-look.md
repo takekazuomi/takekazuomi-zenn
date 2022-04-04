@@ -3,7 +3,7 @@ title: "Azure Container Apps を試す"
 emoji: "💪"
 type: "tech" # tech: 技術記事
 topics: ["azure", "conatiner", "containerapps", "入門", "bicep"]
-published: true
+published: false
 ---
 
 # 概要
