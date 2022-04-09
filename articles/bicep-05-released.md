@@ -113,5 +113,5 @@ vnet public moduleの場合
 
 ちょっとドキュメントの更新が追いついていないのか、初見殺しの部分があるが、VSCodeのプラグインでレポジトリのブラウズができるようにするなどの工夫で十分使えるようなりそうに思う。まだモジュールの数が少ないので、もっと増えるのを期待している。それまでは、[Common Azure Resource Modules Library](https://github.com/Azure/ResourceModules)を有効利用することになるだろう。
 
-[^1:] Public module registryの公式ドキュメントは、<https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/modules#public-module-registry> にある。 <https://github.com/Azure/bicep/issues/62> とか <https://github.com/Azure/bicep/issues/2128> あたりも参考になると思う。
-[^2:] propertiesの中に入っているのを、フラット化(上に上げる？)話は、このあたりでディスカッションされてるようだ。<https://github.com/Azure/bicep/issues/2052> 当然のように「名前がぶつかることがあるよね」って話が出ている。
+[^1]: Public module registryの公式ドキュメントは、[docs.microsoft.com/Public module registry](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/modules#public-module-registry) にある。 [GitHub Bicep #62](https://github.com/Azure/bicep/issues/62) とか [GitHub Bicep #2128](https://github.com/Azure/bicep/issues/2128) あたりも参考になると思う。
+[^2]: propertiesの中に入っているのを、フラット化(上に上げる？)話は、このあたりでディスカッションされてるようだ。 [GitHub Bicep #2052](https://github.com/Azure/bicep/issues/2052) 当然のように「名前がぶつかることがあるよね」って話が出ている。
