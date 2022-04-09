@@ -18,7 +18,6 @@ Ignite 2021 で、[ Azure Container Apps](https://azure.microsoft.com/ja-jp/serv
 
 ![demo](./media/cappdemo01.png)
 
-
 1. レポジトリをforkする
 2. GitHub Actionようにクレデンシャルを設定する
 
