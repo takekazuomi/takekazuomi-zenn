@@ -3,14 +3,14 @@ title: "Bicep 0.5がリリースされました"
 emoji: "💪"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["azure", "arm", "bicep", "入門", "bicep入門"]
-published: false
+published: true
 ---
 
 # 概要
 
-待望の[Bicep 0.5](https://github.com/Azure/bicep/releases/tag/v0.5.6)が出たので少し使ってみた。今回の最も大きな更新は、**Bicep Public Registry** という事で、既存のテンプレートで使ってみる。
+2022/4/9、待望の[Bicep 0.5](https://github.com/Azure/bicep/releases/tag/v0.5.6)が出たので少し使ってみた。今回の注目の更新は、**Bicep Public Registry** 。これを、既存のテンプレートで使ってみる。[^1]
 
-4/9時点で公開されてるモジュールは、ソースが[ここに Bicep Registry Modules](https://github.com/Azure/bicep-registry-modules#bicep-registry-modules)にある。まだまだ数が少ないが、VNetがあったので、これを[azure-bastion01](https://github.com/takekazuomi/azure-bastion01)に入れて試してみた。
+現時点で、公開されてるモジュールは、ソースが[Bicep Registry Modules](https://github.com/Azure/bicep-registry-modules#bicep-registry-modules)にある。まだまだ数が少ないがVNetがあったので、これを[azure-bastion01](https://github.com/takekazuomi/azure-bastion01)に入れて試してみた。
 
 変更前、下記の[リソース定義](https://github.com/takekazuomi/azure-bastion01/blob/v1.0.0/deploy/vnet.bicep#L10-L22)でVNetが定義されている。
 
@@ -29,7 +29,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2020-06-01' = {
 }
 ```
 
-これを、public module の最小限のパラーメータの例、[Virtual Networks module](https://github.com/Azure/bicep-registry-modules/blob/main/modules/network/virtual-network/README.md#example-1)で入れ替える。module のname が被らないように工夫されているなどあるが、ただ入れ替えただけで概ね行けそうな気がする。
+これを、public module の最小限のパラーメータの例、[Virtual Networks module](https://github.com/Azure/bicep-registry-modules/blob/main/modules/network/virtual-network/README.md#example-1)(下記)で入れ替える。module のname が被らないように工夫されているなどあるが、ただ入れ替えただけで概ね行けそうな気がする。
 
 ```bicep
 module vnet 'br/public:network/virtual-network:1.0' = {
@@ -47,13 +47,13 @@ module vnet 'br/public:network/virtual-network:1.0' = {
 
 ```sh
 $ bicep build ./vnet.bicep
-/home/takekazu/ghq/github.com/takekazuomi/azure-bastion01/deploy/vnet.bicep(10,13) : Error BCP192: Unable to restore the module with reference "br:mcr.microsoft.com/bicep/network/virtual-network:1.0": The module does not exist in the registry.
-/home/takekazu/ghq/github.com/takekazuomi/azure-bastion01/deploy/vnet.bicep(22,26) : Error BCP062: The referenced declaration with name "vnet" is not valid.
+vnet.bicep(10,13) : Error BCP192: Unable to restore the module with reference "br:mcr.microsoft.com/bicep/network/virtual-network:1.0": The module does not exist in the registry.
+vnet.bicep(22,26) : Error BCP062: The referenced declaration with name "vnet" is not valid.
 ```
 
-どうやら、`The module does not exist in the registry`、レポジトリにモジュールが無いらしいので、mcr に登録されているモジュールとして存在するかを確認する。この手の問題が起きたときには、[Microsoft Container Registry (MCR)](https://github.com/microsoft/containerregistry)に書いてある方法を使って調べている。あまり便利では無いが、まあ事足りる。
+エラーは、`The module does not exist in the registry`。どうやら、レポジトリにモジュールが無いらしいので、mcr に存在するかを確認する。日頃から、この手の問題が起きたときには、[Microsoft Container Registry (MCR)](https://github.com/microsoft/containerregistry)に書いてある方法を使って調べている。あまり便利では無いが、まあ事足りる。
 
-そもそもレポジトリに登録されているかを調べるとどうやら登録されているらしい。
+まず、そもそもレポジトリに登録されているかを調べる。どうやら登録されているらしい。
 
 ```sh
 curl -s https://mcr.microsoft.com/v2/_catalog | grep bicep
@@ -76,7 +76,7 @@ $ curl -s https://mcr.microsoft.com/v2/bicep/network/virtual-network/tags/list
 }
 ```
 
-これを使うことにして、モジュールのパスを `'br/public:network/virtual-network:1.0.1'` に変更する。subnetの定義を入れると、[こんな感じ](https://github.com/takekazuomi/azure-bastion01/blob/v1.1.0/deploy/vnet.bicep#L10-L21)になる。
+これを使うことにして、モジュールのパスを `'br/public:network/virtual-network:1.0.1'` に変更する。subnetの定義を入れると、[こんな感じ](https://github.com/takekazuomi/azure-bastion01/blob/v1.1.0/deploy/vnet.bicep#L10-L21)(下記)になる。
 
 ```bicep
 module vnet 'br/public:network/virtual-network:1.0.1' = {
@@ -92,7 +92,7 @@ module vnet 'br/public:network/virtual-network:1.0.1' = {
 }
 ```
 
-もう１つ変更がある。このVNetのモジュールでは、subnetで受け付ける形式が、ARM ネイティブと少し違う。もともとは、`properties.addressPrefix`のようになってた部分を、`properties` を省略して１つレベルを上げて書く。これは、vnet public module の実装に依存するが、おそらくデザインパターンとして統一しているのでは無いかと思う。このあたりは、未確認。
+もう１つ変更がある。このVNetのモジュールでは、subnetで受け付ける形式が、ARM ネイティブと少し違う。もともとは、`properties.addressPrefix`のようになってた部分を、`properties` を省略して１つレベルを上げて書く。これは、vnet public module の実装に依存するが、おそらくデザインパターンとして統一しているのでは無いかと思う。このあたりは、未確認。[^2]
 
 ```json
 "name": "subnet",
@@ -111,4 +111,7 @@ vnet public moduleの場合
 
 ## 最後に
 
-ちょっとドキュメントの更新が追いついていないのか、初見殺しの部分があるが、VSCodeのプラグインでレポジトリのブラウズができるようにするなどの工夫で十分使えるようなりそうに思う。もっとモジュールが増えるのを期待している。それまでは、[Common Azure Resource Modules Library](https://github.com/Azure/ResourceModules)を有効利用することになるだろう。
+ちょっとドキュメントの更新が追いついていないのか、初見殺しの部分があるが、VSCodeのプラグインでレポジトリのブラウズができるようにするなどの工夫で十分使えるようなりそうに思う。まだモジュールの数が少ないので、もっと増えるのを期待している。それまでは、[Common Azure Resource Modules Library](https://github.com/Azure/ResourceModules)を有効利用することになるだろう。
+
+[^1:] Public module registryの公式ドキュメントは、<https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/modules#public-module-registry> にある。 <https://github.com/Azure/bicep/issues/62> とか <https://github.com/Azure/bicep/issues/2128> あたりも参考になると思う。
+[^2:] propertiesの中に入っているのを、フラット化(上に上げる？)話は、このあたりでディスカッションされてるようだ。<https://github.com/Azure/bicep/issues/2052> 当然のように「名前がぶつかることがあるよね」って話が出ている。
