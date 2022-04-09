@@ -1,5 +1,5 @@
 ---
-title: "Bicep 0.5リリース"
+title: "Bicep 0.5がリリースされました"
 emoji: "💪"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["azure", "arm", "bicep", "入門", "bicep入門"]

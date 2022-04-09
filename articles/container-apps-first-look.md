@@ -8,7 +8,7 @@ published: false
 
 # 概要
 
-Ignite 2021 で、[ Azure Container Apps](https://azure.microsoft.com/ja-jp/services/container-apps/) が発表された。どんなものなのかはさておき、コンテナホスティング難民のオアシスになりそうに感じなのでまずは使ってみる。
+Ignite 2021 で、[Azure Container Apps](https://azure.microsoft.com/ja-jp/services/container-apps/) が発表された。どんなものなのかはさておき、コンテナホスティング難民のオアシスになりそうに感じなのでまずは使ってみる。
 
 まずは、サンプルを[Container App Store Microservice Sample](https://github.com/Azure-Samples/container-apps-store-api-microservice)を動かしてみよう。
 
