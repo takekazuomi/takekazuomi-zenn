@@ -2,17 +2,19 @@
 title: "Bicep 0.5がリリースされました"
 emoji: "💪"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["azure", "arm", "bicep", "入門", "bicep入門"]
+topics: ["azure", "arm", "bicep", "入門", "bicep入門", "mcr", "[Microsoft Container Registry"]
 published: true
 ---
 
 # 概要
 
-2022/4/9、待望の[Bicep 0.5](https://github.com/Azure/bicep/releases/tag/v0.5.6)が出たので少し使ってみた。今回の注目の更新は、**Bicep Public Registry** 。これを、既存のテンプレートで使ってみる。[^1]
+2022/4/9に待望の[Bicep 0.5](https://github.com/Azure/bicep/releases/tag/v0.5.6)が出たので少し使ってみた。今回の注目の更新は、**Bicep Public Registry**[^1]。これを、既存のテンプレートで使ってみる。
 
 現時点で、公開されてるモジュールは、ソースが[Bicep Registry Modules](https://github.com/Azure/bicep-registry-modules#bicep-registry-modules)にある。まだまだ数が少ないがVNetがあったので、これを[azure-bastion01](https://github.com/takekazuomi/azure-bastion01)に入れて試してみた。
 
-変更前、下記の[リソース定義](https://github.com/takekazuomi/azure-bastion01/blob/v1.0.0/deploy/vnet.bicep#L10-L22)でVNetが定義されている。
+## VNetモジュールに入れかる
+
+変更前、[下記ようなbicep](https://github.com/takekazuomi/azure-bastion01/blob/v1.0.0/deploy/vnet.bicep#L10-L22)でVNetを定義している。
 
 ```bicep
 resource vnet 'Microsoft.Network/virtualNetworks@2020-06-01' = {
@@ -47,7 +49,8 @@ module vnet 'br/public:network/virtual-network:1.0' = {
 
 ```sh
 $ bicep build ./vnet.bicep
-vnet.bicep(10,13) : Error BCP192: Unable to restore the module with reference "br:mcr.microsoft.com/bicep/network/virtual-network:1.0": The module does not exist in the registry.
+vnet.bicep(10,13) : Error BCP192: Unable to restore the module with reference \
+  "br:mcr.microsoft.com/bicep/network/virtual-network:1.0": The module does not exist in the registry.
 vnet.bicep(22,26) : Error BCP062: The referenced declaration with name "vnet" is not valid.
 ```
 
@@ -91,6 +94,8 @@ module vnet 'br/public:network/virtual-network:1.0.1' = {
   }
 }
 ```
+
+## subnetの定義を合わせる
 
 もう１つ変更がある。このVNetのモジュールでは、subnetで受け付ける形式が、ARM ネイティブと少し違う。もともとは、`properties.addressPrefix`のようになってた部分を、`properties` を省略して１つレベルを上げて書く。これは、vnet public module の実装に依存するが、おそらくデザインパターンとして統一しているのでは無いかと思う。このあたりは、未確認。[^2]
 
