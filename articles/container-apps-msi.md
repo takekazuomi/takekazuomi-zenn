@@ -2,7 +2,7 @@
 title: "Azure Container Apps のMSIを試す"
 emoji: "🚀"
 type: "tech" # tech: 技術記事
-topics: ["azure", "conatiner", "containerapps", "入門", "bicep", "msi"]
+topics: ["azure", "conatiner", "containerapps", "入門", "bicep", "msi", "ACA"]
 published: true
 ---
 
@@ -69,7 +69,8 @@ deploy-apps:		## deploy msi check app
 
 ![DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-go/raw/sdk/azidentity/v0.14.0/sdk/azidentity/img/DAC_flow.PNG)
 
-なかなか便利（だと思う）なのだが、バージョン安定性が低い。今回は、azcore 0.23.0に、azblob が付いてこれてないらしく。（[このあたり](https://github.com/Azure/azure-sdk-for-go/issues/17472#issuecomment-1092926620)に事情がかいてある）とりあえず前のバージョンを使うことにした。[^azb]
+なかなか便利（だと思う）なのだが、バージョン安定性が低い。今回は、[azcore 0.23.0](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore@v0.23.0)に、[azblob](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azblob@v0.3.0) が付いてこれてないらしく。（[このあたり](https://github.com/Azure/azure-sdk-for-go/issues/17472#issuecomment-1092926620)に事情がかいてある）
+とりあえず前のバージョンを使うことにした。[^azb]
 
 ## 最後に
 
