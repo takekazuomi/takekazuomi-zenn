@@ -77,6 +77,7 @@ deploy-apps:		## deploy msi check app
 Azure Container Apps なかなか良さげでお勧めです。もちろん、bicepも。
 
 [^aca]: Azure Container Apps を略して**ACA**と呼ぶそうです。
-[^MSI]: https://kogelog.com/2022/04/14/20220414-01/ Public preview: Managed identities support in Azure Container Apps https://azure.microsoft.com/ja-jp/updates/public-preview-managed-identities-support-in-azure-container-apps/
+[^MSI]: https://kogelog.com/2022/04/14/20220414-01/
+        Public preview: Managed identities support in Azure Container Apps https://azure.microsoft.com/ja-jp/updates/public-preview-managed-identities-support-in-azure-container-apps/
 [^pod]: アプリは、k8sでいうPODのような位置付けになり、新しいAPIやサービスを作ると増減することを想定している。場合によっては3桁になる場合もあるだろう。
 [^azb]: これ、[Migrate azblob to latest version of azcore #17528](https://github.com/Azure/azure-sdk-for-go/pull/17528)が来たら直るんじゃないかと思っている。
