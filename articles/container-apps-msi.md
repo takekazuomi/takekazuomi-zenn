@@ -18,6 +18,32 @@ MSI自体は、Azureの他のリソースと違いは無く同じような感じ
 
 MSI(System Managed Identity)は、`'Microsoft.App/containerApps`（以下アプリ） と、アクセス対処のリソースを繋ぐ形になる。アプリは、1つもしくは復数のコンテナで構成され[^pod]、構成の変更や増減は割と頻繁に行なわれることが想定される。どのアプリがどのリソースにアクセスすることを許可するかは、MSIで決めるという位置付けにする。なので、今回は、アプリをデプロイするモジュール[container.bicep](https://github.com/takekazuomi/aca-msi01/blob/v1.0.0/deploy-app/container.bicep)と、割当て(Role Assignments)を行うモジュール[roleAssignment.bicep](https://github.com/takekazuomi/aca-msi01/blob/v1.0.0/deploy-app/roleAssignment.bicep)を分け、デプロイはこの２つをまとめて[main.bicep](https://github.com/takekazuomi/aca-msi01/blob/v1.0.0/deploy-app/main.bicep)で行うようにした。
 
+```bicep :main.bicep
+module containerApps 'container.bicep' = {
+  name: 'containerApps'
+  params: {
+    location: location
+    containerAppName: containerAppName
+    containerImage: containerImage
+....
+    transport: transport
+    allowInsecure: allowInsecure
+    env: env
+    acrName: acrName
+  }
+}
+
+module roleAssignment 'roleAssignment.bicep' = {
+  name: 'roleAssignment'
+  params: {
+    roleDefinitionResourceId: role.id
+    containerAppPrincipalId: containerApps.outputs.principalId
+    containerAppResourceId: containerApps.outputs.id
+    storageAccountName: storageAccountName
+  }
+}
+```
+
 この書き方だと、異なったリソースへのアクセス権をもったアプリを同じbicepでデプロイ出来ないので、もう少し工夫する必要があるように思うが。とりあえず、こうしておけば、[az cli](https://github.com/takekazuomi/aca-msi01/blob/v1.0.0/Makefile#L37) 一発でデプロイできる。
 
 ```Makefile
@@ -36,5 +62,5 @@ deploy-apps:		## deploy msi check app
 ```
 
 
-[^MSI]: Public preview: Managed identities support in Azure Container Apps https://azure.microsoft.com/ja-jp/updates/public-preview-managed-identities-support-in-azure-container-apps/
-[^pod]: k8sでいうPODのような位置付けになる。新しいAPIやサービスを作ると増えることを想定している。場合によっては3桁になる場合もあるだろう。
+[^MSI]: https://kogelog.com/2022/04/14/20220414-01/ Public preview: Managed identities support in Azure Container Apps https://azure.microsoft.com/ja-jp/updates/public-preview-managed-identities-support-in-azure-container-apps/
+[^pod]: アプリは、k8sでいうPODのような位置付けになり、新しいAPIやサービスを作ると増減することを想定している。場合によっては3桁になる場合もあるだろう。
