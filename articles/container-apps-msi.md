@@ -1,14 +1,14 @@
 ---
 title: "Azure Container Apps のMSIを試す"
-emoji: "💪"
+emoji: "🚀"
 type: "tech" # tech: 技術記事
 topics: ["azure", "conatiner", "containerapps", "入門", "bicep", "msi"]
-published: false
+published: true
 ---
 
 # 概要
 
-今朝起きたら、ACAの更新が出てると教えもらい。どうやら、MSI（待望の）がサポートされるようになった[^MSI]らしいと聞き、ちょっと試してみた。
+今朝起きたら、ACA[^aca]の更新が出てると教えもらい。どうやら、MSI（待望の）がサポートされるようになった[^MSI]らしいと聞き、ちょっと試してみた。
 
 コードは[github:aca-msi01](https://github.com/takekazuomi/aca-msi01)に置いた。
 
@@ -75,6 +75,7 @@ deploy-apps:		## deploy msi check app
 
 Azure Container Apps なかなか良さげでお勧めです。もちろん、bicepも。
 
+[^aca]: Azure Container Apps を略して**ACA**と呼ぶそうです。
 [^MSI]: https://kogelog.com/2022/04/14/20220414-01/ Public preview: Managed identities support in Azure Container Apps https://azure.microsoft.com/ja-jp/updates/public-preview-managed-identities-support-in-azure-container-apps/
 [^pod]: アプリは、k8sでいうPODのような位置付けになり、新しいAPIやサービスを作ると増減することを想定している。場合によっては3桁になる場合もあるだろう。
 [^azb]: これ、[Migrate azblob to latest version of azcore #17528](https://github.com/Azure/azure-sdk-for-go/pull/17528)が来たら直るんじゃないかと思っている。
