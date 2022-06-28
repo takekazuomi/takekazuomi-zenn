@@ -156,7 +156,7 @@ $ git sparse-checkout set --no-cone '/*' '!quickstarts'
 
 [^git]: Bring your monorepo down to size with sparse-checkout <https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/> 2020年の初頭から使えたらしい、知らなかった、、、
 [^co]: 部分チェックアウトは、10数年前に、svnからgitに移行したときに探した機能の１つ。無くて残念な気分になったのを思い出す。
-[^git2]: Highlights from Git 2.26 <https://github.blog/2020-03-22-highlights-from-git-2-26/>
+[^git2]: Highlights from Git 2.26 <https://github.blog/2020-03-22-highlights-from-git-2-26/> add 既存ルールに追加で、set はルールの設定（上書き）、add の方が普段使いに便利そうだが既存ルールを上書きしたい場合は set を使う。
 [^pc]: Partial Clone <https://git-scm.com/docs/partial-clone>
 [^git3]: 既存のリポジトリでスパースチェックアウトを使用する <https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/#using-sparse-checkout-with-an-existing-repository>
 [^sc]: Cone mode: restricted patterns improve performance <https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/#cone-mode-restricted-patterns-improve-performance> Cone mode というらしい。
