@@ -3,15 +3,14 @@ title: "git sparse-checkout"
 emoji: "🎈"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["git", "紹介"]
-published: false
+published: true
 ---
 
 いつのまにか、git で一部のディレクトリだけチェックアウトすることができるようになってたので試してみた。[^git]
 
-[azure-quickstart-templates](https://github.com/Azure/azure-quickstart-templates)のようなファイルが大量になるレポジトリだと一部だけ欲しくなる。また、レポジトリの中に利用しているOSのファイルシステムでは使えないような文字が使われたファイルがある場合もある。
+[azure-quickstart-templates](https://github.com/Azure/azure-quickstart-templates)のようなファイルが大量になるレポジトリだと一部だけ欲しくなる。また、レポジトリの中に利用しているOSのファイルシステムでは使えないような文字が使われたファイルがある場合もあり、一部だけチェックアウトできるのは嬉しい。[^co]
 
-新しいレポジトリをクローンするところから始める場合。最初にcloneするときに、`--no-checkout` オプションを付ける。
-こうすると、すべてのGit objectがクローンされるが、ファイルは作成されない。
+ここでは、新しいレポジトリをクローンするところから始める。まず、最初にcloneするときに、`--no-checkout` オプションを付ける。こうすると、すべてのGit objectがクローンされるが、ファイルは作成されない。
 
 ```sh
 $ git clone --no-checkout https://github.com/Azure/azure-quickstart-templates
@@ -29,10 +28,9 @@ Resolving deltas: 100% (135339/135339), done.
 ```sh
 $ cd azure-quickstart-templates
 $ ls
-
 ```
 
-`sparse-checkout init` して、欲しいディレクトリを追加する。`add` は、2.26からだそうだ[^git2]
+`sparse-checkout init --cone` して、欲しいディレクトリを追加する。`add` は、2.26からだそうだ[^git2]
 
 ```sh
 $ git sparse-checkout init --cone
@@ -148,6 +146,18 @@ Already on 'master'
 Your branch is up to date with 'origin/master'.
 ```
 
-[^git]: Bring your monorepo down to size with sparse-checkout <https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/>
+## 最後に
+
+特定のディレクトリだけ無視したい場合、`git sparse-checkout set --no-cone` を使う。`quickstarts` だけを除外したいなら、下記のようにする。[^fp]
+
+```sh
+$ git sparse-checkout set --no-cone '/*' '!quickstarts'
+```
+
+[^git]: Bring your monorepo down to size with sparse-checkout <https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/> 2020年の初頭から使えたらしい、知らなかった、、、
+[^co]: 部分チェックアウトは、10数年前に、svnからgitに移行したときに探した機能の１つ。無くて残念な気分になったのを思い出す。
 [^git2]: Highlights from Git 2.26 <https://github.blog/2020-03-22-highlights-from-git-2-26/>
 [^pc]: Partial Clone <https://git-scm.com/docs/partial-clone>
+[^git3]: 既存のリポジトリでスパースチェックアウトを使用する <https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/#using-sparse-checkout-with-an-existing-repository>
+[^sc]: Cone mode: restricted patterns improve performance <https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/#cone-mode-restricted-patterns-improve-performance> Cone mode というらしい。
+[^fp]: FULL PATTERN SET <https://git-scm.com/docs/git-sparse-checkout#_internalsfull_pattern_set>
