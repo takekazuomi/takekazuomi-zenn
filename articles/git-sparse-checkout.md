@@ -6,6 +6,8 @@ topics: ["git", "紹介"]
 published: true
 ---
 
+## Sparse checkout（疎なチェックアウト）
+
 いつのまにか、git で一部のディレクトリだけチェックアウトすることができるようになってたので試してみた。[^git]
 
 [azure-quickstart-templates](https://github.com/Azure/azure-quickstart-templates)のようなファイルが大量になるレポジトリだと一部だけ欲しくなる。また、レポジトリの中に利用しているOSのファイルシステムでは使えないような文字が使われたファイルがある場合もあり、一部だけチェックアウトできるのは嬉しい。[^co]
@@ -119,6 +121,8 @@ C:\WS\TMP\AZURE-QUICKSTART-TEMPLATES2
 こんな感じで、指定のディレクトリだけをチェックアウトすることができる。ここまでが、**sparse-checkout** の話。これは、git objectをから指定部分を取り出す、疎なチェックアウトをする機能。
 なかなか便利だ。
 
+## Partial clone(遅延クローン)
+
 これと、`Partial Clone`[^pc] を組み合わせると、オンデマンドで必要なオブジェクトだけをダウンロードすることができる。`Partial Clone`には、`clone` コマンドに `--filter=blob:none` を指定する。10秒足らずで終わり段違いに早い。
 
 ```sh
@@ -165,7 +169,7 @@ You can inspect what was checked out with 'git status'
 and retry with 'git restore --source=HEAD :/'
 ```
 
-メッセージには、`warning: Clone succeeded, but checkout failed.` と出ており、ファイル名のチェックはクローン後のチェックアウトで行われてるようなことっがわかる。この状態で、`git status`すると、作業ディレクトリではステージにファイルがあがっており、中途半端な状態になっている。ここからリカバリするより、、 `protectNTFS false` でクローンし、該当ファイルやディレクトリを除外した方がいい。
+メッセージには、`warning: Clone succeeded, but checkout failed.` と出ており、ファイル名のチェックはクローン後のチェックアウトで行われてるようなことがわかる。この状態で、`git status`すると、作業ディレクトリではステージにファイルがあがっており中途半端な状態になっている。ここからリカバリするより、 `protectNTFS false` でクローンし、該当ファイルやディレクトリを除外した方がいい。
 
 例えば、チェックアウトをしないで、クローンだけして、レポジトリ内で`protectNTFS`を無効に指定する。
 
@@ -181,7 +185,7 @@ $ git config core.protectNTFS false
 $ git clone --config core.protectNTFS=false https://github.com/takekazuomi/test-protectNTFS.git
 ```
 
-最初、`git config --global core.protectNTFS false` のようにしてNTFS保護をグローバルに無効にしてしまえば良いかと思ったが、セミコロンの付いたファイル名を受け付けると脆弱性の問題がある。信頼できるレポジトリでだけで設定するようにした方が良く[^av1]、グローバル設定は避けて、レポジトリ毎に指定した方が良い。その場合、`--config core.protectNTFS=false` のオプションを使用する。以下に例を書く。
+最初、`git config --global core.protectNTFS false` のようにしてNTFS保護をグローバルに無効にしてしまえば良いかと思ったが、セミコロンの付いたファイル名を受け付けると脆弱性の問題があり、信頼できるレポジトリでだけで設定するようにした方が良い。[^av1] なるべく、上記のように、グローバル設定は避けてレポジトリ毎に指定した方が良いだろう。
 
 
 ## 最後に
