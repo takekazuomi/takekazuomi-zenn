@@ -146,6 +146,44 @@ Already on 'master'
 Your branch is up to date with 'origin/master'.
 ```
 
+## NTFSでは作成不可なファイルを除外
+
+NTFSでは作成できないようなファイルが含まれている場合、`git clone` で下記のようなエラーになる。
+
+```powershell
+$ git clone  https://github.com/takekazuomi/test-protectNTFS.git
+Cloning into 'test-protectNTFS'...
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 5 (delta 0), reused 5 (delta 0), pack-reused 0
+Receiving objects: 100% (5/5), done.
+error: invalid path 'work/test:test.txt'
+fatal: unable to checkout working tree
+warning: Clone succeeded, but checkout failed.
+You can inspect what was checked out with 'git status'
+and retry with 'git restore --source=HEAD :/'
+```
+
+メッセージには、`warning: Clone succeeded, but checkout failed.` と出ており、ファイル名のチェックはクローン後のチェックアウトで行われてるようなことっがわかる。この状態で、`git status`すると、作業ディレクトリではステージにファイルがあがっており、中途半端な状態になっている。ここからリカバリするより、、 `protectNTFS false` でクローンし、該当ファイルやディレクトリを除外した方がいい。
+
+例えば、チェックアウトをしないで、クローンだけして、レポジトリ内で`protectNTFS`を無効に指定する。
+
+```powershell
+$ git clone  --no-checkout https://github.com/takekazuomi/test-protectNTFS.git
+$ cd test-protectNTFS
+$ git config core.protectNTFS false
+```
+
+他にも、クローン時に、オプションで`protectNTFS`を無効に指定するなど、幾つか方法はある。
+
+```powershell
+$ git clone --config core.protectNTFS=false https://github.com/takekazuomi/test-protectNTFS.git
+```
+
+最初、`git config --global core.protectNTFS false` のようにしてNTFS保護をグローバルに無効にしてしまえば良いかと思ったが、セミコロンの付いたファイル名を受け付けると脆弱性の問題がある。信頼できるレポジトリでだけで設定するようにした方が良く[^av1]、グローバル設定は避けて、レポジトリ毎に指定した方が良い。その場合、`--config core.protectNTFS=false` のオプションを使用する。以下に例を書く。
+
+
 ## 最後に
 
 特定のディレクトリだけ無視したい場合、`git sparse-checkout set --no-cone` を使う。`quickstarts` だけを除外したいなら、下記のようにする。[^fp]
@@ -161,3 +199,4 @@ $ git sparse-checkout set --no-cone '/*' '!quickstarts'
 [^git3]: 既存のリポジトリでスパースチェックアウトを使用する <https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/#using-sparse-checkout-with-an-existing-repository>
 [^sc]: Cone mode: restricted patterns improve performance <https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/#cone-mode-restricted-patterns-improve-performance> Cone mode というらしい。
 [^fp]: FULL PATTERN SET <https://git-scm.com/docs/git-sparse-checkout#_internalsfull_pattern_set>
+[^av1]: コロンを含むファイル名を悪用されると、remote code execution vulnerability がある。信頼できないレポジトリをクローンする可能性がある場合は、デフォルトでは、core.protectNTFS をtrueにしておいた方がいい。 <https://github.com/git/git/security/advisories/GHSA-589j-mmg9-733v> <https://github.com/advisories/GHSA-74fq-3g57-65f7>
