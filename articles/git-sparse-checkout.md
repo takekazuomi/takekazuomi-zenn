@@ -171,7 +171,7 @@ and retry with 'git restore --source=HEAD :/'
 
 メッセージには、`warning: Clone succeeded, but checkout failed.` と出ており、ファイル名のチェックはクローン後のチェックアウトで行われてるようなことがわかる。この状態で、`git status`すると、作業ディレクトリではステージにファイルがあがっており中途半端な状態になっている。ここからリカバリするより、 `protectNTFS false` でクローンし、該当ファイルやディレクトリを除外した方がいい。
 
-例えば、チェックアウトをしないで、クローンだけして、レポジトリ内で`protectNTFS`を無効に指定する。
+例えば、チェックアウトをしないで、クローンだけして、レポジトリ内で`protectNTFS`を無効に指定。
 
 ```powershell
 $ git clone  --no-checkout https://github.com/takekazuomi/test-protectNTFS.git
@@ -185,8 +185,7 @@ $ git config core.protectNTFS false
 $ git clone --config core.protectNTFS=false https://github.com/takekazuomi/test-protectNTFS.git
 ```
 
-最初、`git config --global core.protectNTFS false` のようにしてNTFS保護をグローバルに無効にしてしまえば良いかと思ったが、セミコロンの付いたファイル名を受け付けると脆弱性の問題があり、信頼できるレポジトリでだけで設定するようにした方が良い。[^av1] なるべく、上記のように、グローバル設定は避けてレポジトリ毎に指定した方が良いだろう。
-
+最初、`git config --global core.protectNTFS false` のようにしてNTFS保護をグローバルに無効にしてしまえば良いかと思ったが、セミコロンの付いたファイル名を受け付けると脆弱性の問題がある。[^av1] 信頼できるレポジトリでだけで設定するようにして、上記のように、グローバル設定は避けてレポジトリ毎に指定した方が良いだろう。
 
 ## 最後に
 
