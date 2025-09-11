@@ -4,12 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preview": "npx zenn preview"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "zenn-cli": "^0.1.80"
+    "zenn-cli": "^0.2.3"
+  },
+  "volta": {
+    "node": "18.19.0",
+    "npm": "10.2.3"
   }
 }
