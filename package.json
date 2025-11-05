@@ -11,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "zenn-cli": "^0.2.3"
+    "zenn-cli": "^0.2.9"
   },
   "volta": {
-    "node": "18.19.0",
+    "node": "22.21.1",
     "npm": "10.2.3"
   }
 }
