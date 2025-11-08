@@ -3,8 +3,14 @@ title: "Hexagonal/Clean Architecture は時代遅れ"
 emoji: "🎈"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["Architecture", "紹介"]
-published: true
+published: false
 ---
+
+> [!Note]
+> 論旨が曖昧になってるので、下記のように整理し直す
+> 1. Separation of Concerns は、ソフトウェア開発の基本。分割することで複雑さをコントロールする。
+> 2. これは、人間は、同時に扱えるコンテキストに限界があるから
+> 3. 分割は繰り返出てくる、マトリョーシカのような構造
 
 ## マイクロサービスにおけるアーキテクチャーパターンの適用
 
@@ -21,14 +27,16 @@ published: true
 > [!Note]
 >
 > Edsger W. Dijkstra "Separation of Concerns" (1974)
+>
 > - 関心の分離（Separation of Concerns）
 >
 > ソフトウェアの複雑性に対処するには、問題を分割して各側面に個別に集中できるようにすることが基本
+>
 > - 原典: "On the Role of Scientific Thought" (1974)
-> - URL: https://en.wikipedia.org/wiki/Separation_of_concerns
-> - https://www.cs.utexas.edu/~EWD/transcriptions/EWD04xx/EWD447.html
+> - URL: <https://en.wikipedia.org/wiki/Separation_of_concerns>
+> - <https://www.cs.utexas.edu/~EWD/transcriptions/EWD04xx/EWD447.html>
 
-**【水平分解（Horizontal Decomposition）】- 旧来のアプローチ**
+**【水平分解（Horizontal Decomposition）】- 旧来のアプローチ**:
 
 2000年代から主流となっていたこのアプローチでは、以下のような特徴がある：
 
@@ -39,7 +47,7 @@ published: true
 
 つまり、アプリケーション内部で横方向に技術層を分離することで、ビジネスロジックを守ろうとする設計だ。
 
-**【垂直分解（Vertical Decomposition）】- マイクロサービスのアプローチ**
+**【垂直分解（Vertical Decomposition）】- マイクロサービスのアプローチ**:
 
 対照的に、マイクロサービスアーキテクチャでは異なるアプローチをとる：
 

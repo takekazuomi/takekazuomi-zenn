@@ -3,7 +3,7 @@ title: "AI Coding"
 emoji: "💪"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["AI", "LLM", "claude", "SSD", "bicep入門", "mcr", "[Microsoft Container Registry"]
-published: true
+published: false
 ---
 
 ## 人間との類似性
