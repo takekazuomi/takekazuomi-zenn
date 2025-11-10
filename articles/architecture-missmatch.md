@@ -25,10 +25,11 @@ published: false
 > 14. マイクロサービスは次のフェーズに来ている、マイクロサービスのデプロイの独立性は、必ずしも1つのコンテナ（POD）であること繋がらない。コードとデプロイ単位は独立した概念である。それがモジュラーモノリス
 > 15. モジュールで書いて、デプロイ時には結合する。結合単位は、ワークロードなど運用要件主導で決める。結果、モジューラーモノリスとマイクロサービスの中間のようなものになる
 > 16. アーキテクチャーを操るということは、複雑性を操作することに似ている。複雑性自体を完全に消すことはできないので、扱いやすいサイズにする、ポイントを移動するなどの方法を使って、アーキテクチャーを組み上げていく。消して、何処にでも適応できる究極のアーキテクチャー的なものがあるわけでなく。アーキテクチャーとは発見していくもののように思う。円空が、もともと木の中に居る仏を掘り出して仏像を作ったように、元々あるものをアーキテクチャーという形にしていくように思う。短く言うと、「自然とこうなるとか、当たりまえにこうなる」という感じが良いアーキテクチャーな気がする
+> 17. 全体像と分割は相反したものなのか？を書く
 
 ## マイクロサービスにおけるアーキテクチャーパターンの適用
 
-プロジェクトでマイクロサービス風[^arch1]のアーキテクチャーを採用している。周りを見てみると、Hexagonal Architecture（ポート&アダプター）やClean Architectureを各サービス内部に律儀に適用してるケースをママ見かけるし、そうしたいという話も聞く。
+プロジェクトでマイクロサービス風[^arch1]のアーキテクチャーを採用してる。周りを見てみると、Hexagonal Architecture（ポート&アダプター）やClean Architectureを各サービス内部に律儀に適用してるケースをママ見かけるし、そうしたいという話も聞く。
 
 これは一種の**over-engineering**で、まるで「Enterprise Hello World」のように、シンプルであるべきものを過剰に複雑にしてしまっている。なぜそう言えるのか、順を追って説明していく。
 
@@ -36,41 +37,56 @@ published: false
 
 マイクロサービスとは、APIで定義されたインターフェイスを通じて相互通信する、疎結合な複数のサービスでアプリケーションを構成するアーキテクチャパターンだ[^arch2]。
 
-ここには、「分けることによって複雑性を軽減したい」という大きなモチベーションがある。しかし、話はそう単純じゃない。分けることでサービス間の統合や連携における複雑性が増加し、**複雑性の移動**が発生する。
+ここには、「分けることによって複雑性を軽減したい」という大きなモチベーションがある。しかし、話はそう単純じゃない。
+
+分けることでサービス内部の複雑性は減るが、サービス間の統合や連携における複雑性が増加する。つまり、**複雑性の移動**が発生する。複雑性は消えるのではなく、別の場所に移動するだけだ。
+
+- **サービス内部**：単純化される（各サービスは小さくシンプル）
+- **サービス間**：複雑化する（分散システムの課題：ネットワーク、一貫性、監視、デバッグ）
 
 この複雑性の移動を理解するには、まず「分ける」ということの本質を考える必要がある。
 
 ## 分けるということ
 
-### Separation of Concerns - ソフトウェア開発の基本
+### なぜ分けるのか - Separation of Concerns
 
 Separation of Concerns（関心の分離）は、ソフトウェア開発の基本原則だ[^soc]。分割することで複雑さをコントロールする。
 
-なぜ分割が必要なのか？それは、人間には同時に扱えるコンテキストに限界があるからだ。分けることで取り扱いやすくなる。
+この概念を提唱したEdsger W. Dijkstraは、こう述べている：
+
+> Let me try to explain to you, what to my taste is characteristic for all intelligent thinking. It is, that one is willing to study in depth an aspect of one's subject matter in isolation for the sake of its own consistency
+
+知的思考の本質は、**対象のある側面を、それ自体の論理のために分離して深く研究すること**だ。つまり、問題を分割して、各側面に個別に集中できるようにすることが、複雑性に対処する基本だということだ。
+
+Dijkstraは続けて、その理由を端的に述べている：「we have very, very small heads」（我々の頭は、とてもとても小さい）。人間の脳は、複数の関心事を同時に深く考えることができない。分離は、**人間の認知能力という物理的制約に対する唯一の対処法**だ。
+
+つまり、人間には同時に扱えるコンテキストに限界がある。認知負荷を減らし、一度に考えるべきことを減らす。分けることで取り扱いやすくなる。
 
 ### ソフトウェアにおけるマトリョーシカ構造
 
-ソフトウェアの世界では、分割は繰り返し出てくる、マトリョーシカのような構造になっている。
+ソフトウェアのように複雑性が爆発的に増加しやすいものでは、分割は繰り返し出てくる、マトリョーシカのような構造になっている。
 
 ```
 ブロック → 関数 → パッケージ → gRPCサーバー → マイクロサービス → インターネットサービス
 ```
 
-分割することで、コンテキストが限定され、粒度も細かくなり、深く考えられるようになる。つまり、**Separation of Concerns をどのようにコントロールするか** が重要になる。
-
-> [!Note]
->
-> この部分は、丁寧に説明する。Dijkstra の考えを引用しつつ、説明するのが良いかもしれない。
+分割することで、コンテキストが限定され、粒度も細かくなり、深く考えられるようになる。つまり、**Separation of Concerns をどのようにコントロールするか = 分割するということ**である。
 
 ## 複雑性の移動とトレードオフ
 
-分割したものを統合して動かすことになり、分割には内在するコストが付随する。分割にはトレードオフがある。
+ここで重要な原則を理解する必要がある：**分割したものは、いずれ統合して動かす必要がある**。
 
-ある程度の規模になったシステムを分割する方法には、2つの対照的なアプローチがある[^arch3]。
+分割は万能薬ではない。分割には内在するコストが付随する：
 
-> [!Note]
->
-> ここは、なにを言っているかわからない。書き直す。
+- **統合のコスト**：分割されたコンポーネント間の通信、協調、整合性の維持
+- **管理のコスト**：複数のコンポーネントの監視、デプロイ、バージョン管理
+- **理解のコスト**：システム全体の動作を理解するために複数の場所を見る必要がある
+
+つまり、**分割にはトレードオフがある**。
+
+複雑性は消えるのではなく、形を変えて別の場所に移動する。この「複雑性の移動」をどうコントロールするかが、アーキテクチャー設計の本質だ。
+
+では、システムを分割する方法にはどのようなアプローチがあるのだろうか？ある程度の規模になったシステムを分割する方法には、2つの対照的なアプローチがある[^arch3]。
 
 ### 水平分解（Horizontal Decomposition）
 
@@ -137,31 +153,78 @@ Separation of Concerns（関心の分離）は、ソフトウェア開発の基�
 
 マイクロサービスで分けることによって、シンプルにすることが目的だ。だから、従来のモノリシックな巨大アプリケーションを作る場合の技法（Hexagonal/Clean Architecture）をサービスに持ち込むのは本末転倒。**ここが本題だ。**
 
-### Hexagonal/Clean が解決していた問題はサービスの外側に移動する
+### Hexagonal/Clean が解決していた問題はサーバーサービスの外側に移動する
 
 Hexagonal/Clean Architectureは、単一の大きなアプリケーション内部で、ビジネスロジックを技術的な詳細から守るために生まれた。しかし、マイクロサービスでは、この問題の性質が変わる。
 
-**サービス境界がすでに強力な分離を提供している**からだ。ビジネスロジックの独立性は、サービス単位で達成される。データベースの詳細も、外部APIとの連携も、すべてサービスの外側の問題になる。
+**サービス境界がすでに強力な分離を提供してる**からだ。ビジネスロジックの独立性は、サービス単位で達成される。データベースの詳細も、外部APIとの連携も、すべてサーバーサービスの外側の問題になる。
 
 ### 2つの分解アプローチを同時適用すると複雑性が増幅する
 
-マイクロサービスアーキテクチャ（垂直分解）を採用している環境で、各サービス内部にHexagonal ArchitectureやClean Architecture（水平分解）を適用すると、**2つの分解アプローチが競合**する[^arch3]。
+マイクロサービスアーキテクチャ（垂直分解）を採用してる環境で、各サービス内部にHexagonal ArchitectureやClean Architecture（水平分解）を適用すると、**2つの分解アプローチが競合**する[^arch3]。
 
 具体的には以下のような問題が発生する：
 
-- **分離の重複**: サービス境界と内部レイヤーで二重の分離が発生
-- **複雑性の増幅**: 複雑性が掛け算的に増加（サービス数 × レイヤー数）
-- **開発速度の低下**: マイクロサービスの利点（独立デプロイ、迅速な変更）が損なわれる
+- **分離の重複**：サービス境界と内部レイヤーで二重の分離が発生
+- **複雑性の増幅**：複雑性が掛け算的に増加（サービス数 × レイヤー数）
+- **開発速度の低下**：マイクロサービスの利点（独立デプロイ、迅速な変更）が損なわれる
 
 マイクロサービスは、**小さく、単純であることが価値**だ[^arch8]。各サービス内にHexagonal Architectureのような複雑なレイヤー構造を導入すると、以下のような問題が発生する：
 
-- **コードの複雑性が増加**: インターフェース、アダプター、ポートといった抽象レイヤーが追加される
-- **開発速度の低下**: 単純な変更でも複数のレイヤーを跨ぐ必要がある
-- **認知負荷の増大**: 開発者が理解すべき構造が増える
+- **コードの複雑性が増加**：インターフェース、アダプター、ポートといった抽象レイヤーが追加される
+- **開発速度の低下**：単純な変更でも複数のレイヤーを跨ぐ必要がある
+- **認知負荷の増大**：開発者が理解すべき構造が増える
 
 結果として、マイクロサービスの利点である「小さく理解しやすい」という特性が失われてしまう。これじゃ本末転倒だ。
 
 **Martin Fowler**[^arch9]：「マイクロサービスの利点の1つは、各サービスが独立して理解・変更可能なことだ。サービス内部を過度に複雑にすると、この利点が損なわれる」
+
+## 全体感とスケールの問題
+
+ここで、より大きな視点から考えてみよう。
+
+### クライアント-サーバーという大きな分割
+
+最近のサービスのほとんどは、**2つの大きなコンポーネント**で構成されている：
+
+1. **クライアントアプリ**：スマホ、タブレット、ブラウザなどのインターネット端末上で動作
+2. **サーバーサービス**：バックエンドで動作するビジネスロジックとデータ管理
+
+この2つを単純化して見ると、実は**プレゼンテーションレイヤーとビジネスロジックレイヤー**のようなものだ。ここにも分割がある。
+
+### マトリョーシカの入れ子構造
+
+さらに重要なのは、それぞれのコンポーネントの中に、さらに分割された構造があるということだ：
+
+```
+インターネットサービス全体
+├── クライアントアプリ（Presentation Layer）
+│   ├── UI Components
+│   ├── State Management
+│   └── API Client
+│
+└── サーバーサービス（Business Logic + Data Layer）
+    ├── マイクロサービス A
+    │   ├── handler
+    │   ├── service
+    │   └── repository
+    ├── マイクロサービス B
+    └── マイクロサービス C
+```
+
+ユーザーが利用する**インターネットサービス全体**という観点で見ると、Clean Architectureのような同心円状の構造として理解することもできるだろう。
+
+### スケールに応じた適切な設計
+
+しかし、ここで重要な原則がある：**分解した先にさらに無用なレイヤー構造を持ち込むことは、無用な複雑性を生むことになる**。
+
+これは、**全体感の問題**だ。
+
+"Hello World"を出力するだけのプログラムに、DIコンテナを駆使して、複数のレイヤーを用意して、インターフェースを定義して...という設計をする意味はない。それは「Enterprise Hello World」のような過剰設計だ。
+
+同様に、すでにマイクロサービスとして分割されている小さなサービスの内部に、さらにHexagonal ArchitectureやClean Architectureの複雑なレイヤー構造を持ち込むのは、スケールに対して不適切だ。
+
+**適切な粒度で適切な分割を行う**。これがアーキテクチャー設計の要諦だ。
 
 ## マイクロサービスに適した構造
 
@@ -203,9 +266,9 @@ user-service/
 
 マイクロサービス内部では、以下のシンプルな3層構造で十分だ：
 
-- **ハンドラー層**: gRPC/HTTPのリクエストを受け取り、サービス層を呼び出す（境界）
-- **サービス層**: ビジネスロジックを実装（純粋なGoコード）
-- **リポジトリ層**: データベースアクセスを抽象化（インターフェースで分離）
+- **ハンドラー層**：gRPC/HTTPのリクエストを受け取り、サービス層を呼び出す（境界）
+- **サービス層**：ビジネスロジックを実装（純粋なGoコード）
+- **リポジトリ層**：データベースアクセスを抽象化（インターフェースで分離）
 
 この構造は、各層の責任が明確で、見通しが良く、保守しやすい。
 
@@ -219,7 +282,7 @@ user-service/
 - Order Service → MongoDB
 - Analytics Service → Cassandra
 
-この選択は、**サービス外部には公開されない実装の詳細**だ。サービス境界がすでに強力な分離を提供しているため、サービス内部でさらにデータベースを抽象化する必要はない。
+この選択は、**サービス外部には公開されない実装の詳細**だ。サービス境界がすでに強力な分離を提供してるため、サービス内部でさらにデータベースを抽象化する必要はない。
 
 **Chris Richardson（『Microservices Patterns』著者）**[^arch13]：「Database per Service パターンにおいて、データベースはサービスのプライベートな実装の詳細である。他のサービスは、APIを通じてのみアクセスすべきだ」
 
@@ -231,11 +294,97 @@ user-service/
 
 これにより、以下のような利点が得られる：
 
-- **開発時**: マイクロサービスと同様にモジュール単位で独立して開発
-- **デプロイ時**: 運用要件に応じて柔軟に結合・分離
-- **スケーリング**: 必要な部分だけを独立してスケール
+- **開発時**：マイクロサービスと同様にモジュール単位で独立して開発
+- **デプロイ時**：運用要件に応じて柔軟に結合・分離
+- **スケーリング**：必要な部分だけを独立してスケール
 
 マイクロサービスの「独立性」という概念が、コードレベルとデプロイレベルで分離されることで、より柔軟なアーキテクチャが可能になる。
+
+## アーキテクチャーとは何か
+
+ここまで、マイクロサービスにおける分割のアプローチと、Hexagonal/Clean Architectureが不要である理由を見てきた。最後に、アーキテクチャーとは何かについて考えてみたい。
+
+### 複雑性を操作するということ
+
+アーキテクチャーを操るということは、**複雑性を操作すること**に似ている。
+
+複雑性自体を完全に消すことはできない。できるのは：
+
+- **扱いやすいサイズにする**：大きな問題を小さな問題に分割
+- **ポイントを移動する**：複雑性が発生する場所を、扱いやすい場所に移す
+- **適切に分散する**：一箇所に集中させず、複数の場所に分散
+
+これらの方法を使って、アーキテクチャーを組み上げていく。
+
+### 究極のアーキテクチャーは存在しない
+
+決して、どこにでも適応できる「究極のアーキテクチャー」的なものがあるわけではない。
+
+アーキテクチャーとは、**発見していくもの**のように思う。
+
+江戸時代の仏師・円空の話を思い出す。円空は、もともと木の中に居る仏を掘り出して仏像を作ったという。木材に仏像の形を押し付けるのではなく、木が持っている自然な形を活かしながら、そこに潜んでいる仏の姿を見出していく。
+
+アーキテクチャーも同じではないだろうか。システムの本質、ビジネスの要求、技術的制約、チームの特性...これらが持っている自然な形を見出しながら、**元々あるものをアーキテクチャーという形にしていく**。
+
+### 良いアーキテクチャーとは
+
+短く言うと、**「自然とこうなる」とか「当たりまえにこうなる」**という感じが良いアーキテクチャーな気がする。
+
+無理に形を押し付けるのではなく、システムの本質に沿った自然な形。過度に複雑にするのでもなく、過度に単純化するのでもなく、ちょうど良い粒度での分割。
+
+それがマイクロサービスにおいては、「サービス境界で分割し、各サービス内部はシンプルに保つ」という形になる。
+
+## 全体像と分割 - 見かけ上の矛盾
+
+ここで、一つの根本的な問いに立ち返ってみたい：**分けることで、全体が見えなくなるのではないか？**
+
+これは一見、矛盾してるように思える。マイクロサービスとして分割すれば、システム全体の振る舞いが見えにくくなる。各サービス内部をシンプルにすれば、アーキテクチャーの全体像が曖昧になる。では、なぜ分割するのか？
+
+### 逆説の解消
+
+答えは、すでにDijkstraが示してる：「我々の頭は、とてもとても小さい」。
+
+**全体を同時に理解することは、そもそも不可能**だ。人間の認知能力には限界がある。だから、「一時的に視点を限定」して、その範囲を深く理解する。そして、その理解を統合することで、全体が見える。
+
+これは「全体を無視する」のではなく、「全体を理解するための方法」なのだ。
+
+### 抽象化のレベルと「全体」
+
+重要なのは、**各抽象化レベルで「全体」が存在する**ということだ。
+
+先ほど見たマトリョーシカ構造を思い出してほしい：
+
+```
+ブロック → 関数 → パッケージ → gRPCサーバー → マイクロサービス → インターネットサービス
+```
+
+- 関数のレベルでは、その関数が「全体」
+- マイクロサービスのレベルでは、そのサービスが「全体」
+- インターネットサービスのレベルでは、クライアント-サーバー全体が「全体」
+
+各レベルで適切な粒度の分割を行う。**レベルを跨いだ過度な分割は逆効果**だ。マイクロサービス（レベル3）の内部に、モノリス向けのHexagonal/Clean Architecture（レベル2の複雑性）を持ち込むのは、この原則に反してる。
+
+### スケール感の問題
+
+Herbert Simonが示したように、複雑なシステムは「ほぼ分解可能（nearly decomposable）」だ[^arch14]。完全な分解は不可能だが、内部の相互作用は強く、外部の相互作用は弱い。この非対称性が分割を可能にする。
+
+だからこそ、スケールに応じた適切な粒度が重要になる：
+
+- **Hello World**: 変更がほとんどない → 分割不要
+- **マイクロサービス**: サービス境界が強力な分離 → 内部はシンプルに
+- **モノリス**: 内部が複雑 → Hexagonal/Cleanが有効
+
+「全体感の問題」とは、このスケール感を見失うことだ。
+
+### 分離と全体の相補性
+
+**結論として、全体像と分割は相反しない。むしろ、適切な分割なしに全体を理解することは不可能**だ。
+
+David Parnasが示したように、適切な分割基準（変更の隠蔽）により、モジュール単位での理解が全体理解につながる[^arch15]。Larry Constantineが定義した高凝集度・低結合度は、独立性の高いモジュールの組み合わせとして全体を理解できることを意味する[^arch16]。
+
+そして、Fred Brooksが警告したように、複雑性は消えるのではなく移動するだけだ[^arch17]。マイクロサービスは、モノリス内部の複雑性をサービス境界に移動させた。さらに各サービス内部を複雑化すれば、複雑性が「二重に」存在することになる。
+
+**適切な粒度で適切に分割する**。これがアーキテクチャー設計の要諦であり、円空が「自然とこうなる」形を見出したように、システムの本質に沿った分割を発見していくことが重要なのだ。
 
 ---
 
@@ -277,17 +426,21 @@ user-service/
 
 **脚注（アーキテクチャー）**:
 
-[^soc]: Edsger W. Dijkstra, "On the Role of Scientific Thought" (1974) - 関心の分離（Separation of Concerns）の概念を提唱。ソフトウェアの複雑性に対処するには、問題を分割して各側面に個別に集中できるようにすることが基本。https://www.cs.utexas.edu/~EWD/transcriptions/EWD04xx/EWD447.html
-[^arch1]: マイクロサービス風の実装：完全なマイクロサービスアーキテクチャではないが、サービス指向の設計原則を部分的に採用した実装を指す。
-[^arch2]: Martin Fowler, "Microservices Guide" (2014), <https://martinfowler.com/microservices/> マイクロサービスの基礎的な定義。各サービスがビジネス能力中心に構築され、独立したプロセスで実行。
-[^arch3]: DZone, "Vertical vs. Horizontal Decomposition of Responsibilities" (2020), <https://dzone.com/articles/vertical-vs-horizontal-decomposition-of-responsibi> 垂直分解と水平分解の対比を解説。垂直分解がビジネス機能単位での独立性を高める。この対比を理解するのに、なかなか良い記事だ。
-[^arch4]: Alistair Cockburn, "Hexagonal Architecture" (2005年9月4日、最終更新2025年), <https://alistair.cockburn.us/hexagonal-architecture> 単一のアプリケーションを中心に、内部と外部の技術要素を分離する設計パターン。古典的だが、今でも有用な考え方だ。
-[^arch5]: Robert C. Martin, "The Clean Architecture" (2012年8月13日), <https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html> 単一アプリケーション内部を4つの同心円状のレイヤー(Entities, Use Cases, Interface Adapters, Frameworks & Drivers)に分割。Uncle Bobの記事は、いつ読んでも勉強になる。
-[^arch6]: Sam Newman, "Monolith to Microservices" (2019), Chapter 2: Planning a Migration, <https://samnewman.io/books/monolith-to-microservices/> DDDと境界コンテキストでサービス境界を特定。段階的移行の重要性を解説。モノリス分割を考えてる人には必見の内容。
-[^arch7]: Sam Newman, "Building Microservices, 2nd Edition" (2021), Chapter 1: What Are Microservices?, <https://samnewman.io/books/building_microservices_2nd_edition/> 「独立したデプロイ可能性」と「情報隠蔽」がマイクロサービスの核心。安定したサービス境界が疎結合を実現。マイクロサービスを始めるなら、この本は必読だ。
-[^arch8]: Martin Fowler, "Microservice Trade-Offs" (2015), <https://martinfowler.com/articles/microservice-trade-offs.html> マイクロサービスのトレードオフを分析。単純なシステムではモノリスで十分、複雑性を補えるシステムでのみ有効と結論。素晴らしい分析で、マイクロサービス導入前に読んでおくと良い。
-[^arch9]: Martin Fowler, "Microservices Guide" (2014), <https://martinfowler.com/microservices/> マイクロサービスの利点と課題について。各サービスの独立性が重要。
-[^arch10]: Sam Newman, "Building Microservices, 2nd Edition" (2021), Chapter 3: Splitting the Monolith, <https://samnewman.io/books/building_microservices_2nd_edition/> Strangler Fig Patternを紹介。一括書き直しではなく段階的な置き換えを推奨。
-[^arch11]: Vladimir Khorikov, "Unit Testing Principles, Practices, and Patterns" (2020), Chapter 6: Styles of Unit Testing, <https://www.manning.com/books/unit-testing> London SchoolとClassical Styleを比較。インターフェース分離は過剰なモック化のためではなく適切な抽象化のため。
-[^arch12]: Chris Richardson, "Microservices Patterns" (2018), Chapter 3: Inter-process Communication, <https://microservices.io/book> サービス間通信パターンを解説。各サービスが独自DBを持ち、ポリグロット永続性を推奨。マイクロサービスのパターンを体系的に学ぶなら、この本がお勧めだ。
-[^arch13]: Chris Richardson, "Pattern: Database per Service" (2018), <https://microservices.io/patterns/data/database-per-service.html> Database per Serviceパターン。各サービスがDBを専有し、他サービスから直接アクセスされない。microservices.ioは、パターンカタログが充実してて参考になる。
+[^soc]: Edsger W. Dijkstra, "On the Role of Scientific Thought" (1974), EWD447. 関心の分離（Separation of Concerns）の概念を提唱。ソフトウェアの複雑性に対処するには、問題を分割して各側面に個別に集中できるようにすることが基本。Dijkstraの原典として必読。ソフトウェアエンジニアなら一度は読んでおきたい <https://www.cs.utexas.edu/~EWD/transcriptions/EWD04xx/EWD447.html>
+[^arch1]: マイクロサービス風の実装。完全なマイクロサービスアーキテクチャではないが、サービス指向の設計原則を部分的に採用した実装を指す
+[^arch2]: Martin Fowler, "Microservices Guide" (2014), <https://martinfowler.com/microservices/> マイクロサービスの基礎的な定義。各サービスがビジネス能力中心に構築され、独立したプロセスで実行。マイクロサービスの基本を理解するなら、まずはこれから
+[^arch3]: DZone, "Vertical vs. Horizontal Decomposition of Responsibilities" (2020), <https://dzone.com/articles/vertical-vs-horizontal-decomposition-of-responsibi> 垂直分解と水平分解の対比を解説。垂直分解がビジネス機能単位での独立性を高める。この対比を理解するのに、なかなか良い記事
+[^arch4]: Alistair Cockburn, "Hexagonal Architecture" (2005年9月4日、最終更新2025年), <https://alistair.cockburn.us/hexagonal-architecture> 単一のアプリケーションを中心に、内部と外部の技術要素を分離する設計パターン。古典的だが、今でも有用な考え方
+[^arch5]: Robert C. Martin, "The Clean Architecture" (2012年8月13日), <https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html> 単一アプリケーション内部を4つの同心円状のレイヤー(Entities, Use Cases, Interface Adapters, Frameworks & Drivers)に分割。Uncle Bobの記事は、いつ読んでも勉強になる
+[^arch6]: Sam Newman, "Monolith to Microservices" (2019), Chapter 2: Planning a Migration, <https://samnewman.io/books/monolith-to-microservices/> DDDと境界コンテキストでサービス境界を特定。段階的移行の重要性を解説。モノリス分割を考えてる人には必見の内容
+[^arch7]: Sam Newman, "Building Microservices, 2nd Edition" (2021), Chapter 1: What Are Microservices?, <https://samnewman.io/books/building_microservices_2nd_edition/> 「独立したデプロイ可能性」と「情報隠蔽」がマイクロサービスの核心。安定したサービス境界が疎結合を実現。マイクロサービスを始めるなら、この本は必読
+[^arch8]: Martin Fowler, "Microservice Trade-Offs" (2015), <https://martinfowler.com/articles/microservice-trade-offs.html> マイクロサービスのトレードオフを分析。単純なシステムではモノリスで十分、複雑性を補えるシステムでのみ有効と結論。素晴らしい分析で、マイクロサービス導入前に読んでおくと良い
+[^arch9]: Martin Fowler, "Microservices Guide" (2014), <https://martinfowler.com/microservices/> マイクロサービスの利点と課題について。各サービスの独立性が重要。Fowlerの記事は、いつも明快で分かりやすい
+[^arch10]: Sam Newman, "Building Microservices, 2nd Edition" (2021), Chapter 3: Splitting the Monolith, <https://samnewman.io/books/building_microservices_2nd_edition/> Strangler Fig Patternを紹介。一括書き直しではなく段階的な置き換えを推奨。段階的な移行戦略を考える上で、なかなか参考になる
+[^arch11]: Vladimir Khorikov, "Unit Testing Principles, Practices, and Patterns" (2020), Chapter 6: Styles of Unit Testing, <https://www.manning.com/books/unit-testing> London SchoolとClassical Styleを比較。インターフェース分離は過剰なモック化のためではなく適切な抽象化のため。テストとアーキテクチャーの関係を理解する上で良い視点を提供してる
+[^arch12]: Chris Richardson, "Microservices Patterns" (2018), Chapter 3: Inter-process Communication, <https://microservices.io/book> サービス間通信パターンを解説。各サービスが独自DBを持ち、ポリグロット永続性を推奨。マイクロサービスのパターンを体系的に学ぶなら、この本がお勧め
+[^arch13]: Chris Richardson, "Pattern: Database per Service" (2018), <https://microservices.io/patterns/data/database-per-service.html> Database per Serviceパターン。各サービスがDBを専有し、他サービスから直接アクセスされない。microservices.ioは、パターンカタログが充実してて参考になる
+[^arch14]: Herbert A. Simon, "The Architecture of Complexity" (1962), Proceedings of the American Philosophical Society, Vol. 106, No. 6, pp. 467-482. 階層的システムの各レベルで、内部の相互作用は頻繁だが、レベル間の相互作用は稀である（"interactions among subsystems are weak, but not negligible"）。この「ほぼ分解可能性（near decomposability）」により、各サブシステムを短期的には独立して分析できる。複雑性の階層構造を理解する上で基礎となる論文。古典だが、今でも重要な洞察を提供してる
+[^arch15]: David L. Parnas, "On the Criteria To Be Used in Decomposing Systems into Modules" (1972), Communications of the ACM, Vol. 15, No. 12, pp. 1053-1058. モジュール化の基準として「変更されやすい設計判断を各モジュールの秘密として隠蔽する（Each module is characterized by its knowledge of a design decision which it hides from all others）」ことを提唱。適切な分割により、理解可能性（comprehensibility）、開発時間の短縮、柔軟性が向上する。情報隠蔽の概念を確立した古典的論文。情報隠蔽の概念を学ぶなら、この論文は外せない
+[^arch16]: Larry L. Constantine, W. Stevens, G. Myers, "Structured Design" (1974), IBM Systems Journal, Vol. 13, No. 2. および Yourdon & Constantine "Structured Design: Fundamentals of a Discipline of Computer Program and Systems Design" (1979). モジュールの凝集度（cohesion）と結合度（coupling）という2つの指標を定義。高凝集度（機能的凝集が最良）と低結合度（データ結合が理想）が保守性と理解可能性を向上させる。ソフトウェアメトリクスの基礎を築いた。凝集度と結合度の概念は、今でも設計の基本指標として使われてる
+[^arch17]: Frederick P. Brooks Jr., "No Silver Bullet—Essence and Accident in Software Engineering" (1986), Information Processing '86, pp. 1069-1076. ソフトウェアの複雑性を本質的複雑性（essence）と偶発的複雑性（accident）に分類。本質的複雑性は問題領域に固有で削減不可能（"The complexity of software is an essential property, not an accidental one"）。偶発的複雑性は大幅に削減されたが、それにより本質的複雑性が露わになる。複雑性の総量は保存される。ソフトウェア工学の限界を示した重要論文。複雑性の本質を理解する上で、今でも色あせない洞察を提供してる
