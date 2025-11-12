@@ -1,8 +1,8 @@
 ---
-title: "Hexagonal/Clean Architecture は時代遅れ"
+title: "マイクロサービスでHexagonal/Clean Architectureは過剰設計"
 emoji: "🎈"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["Architecture", "紹介"]
+topics: ["アーキテクチャ", "マイクロサービス", "設計", "過剰設計", "複雑性"]
 published: false
 ---
 
@@ -16,7 +16,14 @@ published: false
 
 ## マイクロサービスとは何か
 
-マイクロサービスとは、APIで定義されたインターフェイスを通じて相互通信する、疎結合な複数のサービスでアプリケーションを構成するアーキテクチャパターンだ[^arch2]。
+マイクロサービスとは、Martin FowlerとJames Lewisの定義によれば、**単一のアプリケーションを小さなサービス群の組み合わせとして構築する手法**であり、個々のサービスは自身のプロセス上で動作し、HTTPのリソースAPIなど軽量の機構により通信を行う[^arch2]。
+
+Sam Newmanは、この概念をより簡潔に「小さく、自律的で、協調して動作するサービス」と表現している[^arch19]。ここで重要なのは、2つの核心的な特性だ：
+
+- **独立したデプロイ可能性**：他のサービスに影響を与えずに個別にデプロイできる
+- **情報隠蔽**：各サービスがその実装の詳細を隠す
+
+また、AWS、Azure、Google Cloudなど主要なクラウドプロバイダーは、マイクロサービスの運用上の特性として、**拡張性**と**回復性**を強調している[^arch20]。
 
 ここには、「分けることによって複雑性を軽減したい」という大きなモチベーションがある。しかし、話はそう単純ではない。分けることでサービス内部の複雑性は減るが、サービス間の統合や連携における複雑性が増加する。つまり、**複雑性の移動**が発生する。複雑性は消えてなくなるのではなく、別の場所に移動する。
 
@@ -329,11 +336,15 @@ user-service/
 
 決して、どこにでも適応できる「究極のアーキテクチャー」的なものがあるわけではない。
 
-アーキテクチャーとは、**発見していくもの**のように思う。
+アーキテクチャーとは、**発見していくもの**のように思う[^arch18]。
 
-江戸時代の仏師・円空の話を思い出す。円空は、もともと木の中に居る仏を掘り出して仏像を作ったという。木材に仏像の形を押し付けるのではなく、木が持っている自然な形を活かしながら、そこに潜んでいる仏の姿を見出していく。
+:::message
+**円空の彫刻に見るアーキテクチャーの発見**
+
+江戸時代の仏師・円空は、もともと木の中に居る仏を掘り出して仏像を作ったという。木材に仏像の形を押し付けるのではなく、木が持っている自然な形を活かしながら、そこに潜んでいる仏の姿を見出していく。
 
 アーキテクチャーも同じではないだろうか。システムの本質、ビジネスの要求、技術的制約、チームの特性...これらが持っている自然な形を見出しながら、**元々あるものをアーキテクチャーという形にしていく**。
+:::
 
 ### 良いアーキテクチャーとは
 
@@ -401,45 +412,51 @@ David Parnasが示したように、適切な分割基準（変更の隠蔽）�
 
 マイクロサービスを採用するなら、各サービス内部はシンプルに保つのが筋だと思う。
 
-**核心的な原則:**
+### この記事の核心
 
-この記事で最も重要なポイントは以下の3つ：
+マイクロサービス（垂直分解）とHexagonal/Clean Architecture（水平分解）は、**両立しない分解アプローチ**だ。
 
-- マイクロサービスは垂直分解、Hexagonal/Cleanは水平分解
-- 両方を同時に適用すると、複雑性が掛け算的に増加
-- 垂直分解を選んだら、各サービス内部はシンプルに保つ
+- **垂直分解**：ビジネス機能でシステムを複数のサービスに分割。サービス境界が強力な分離メカニズムとして機能
+- **水平分解**：技術的関心事でアプリケーション内部を層に分割。ビジネスロジックを守る
+- **同時適用の問題**：複雑性が掛け算的に増加。マイクロサービスの「小さく理解しやすい」という利点が失われる
 
-つまり、分解のアプローチは1つに絞るべきってわけだ。
+**分解のアプローチは1つに絞る**。これが複雑性をコントロールする鍵だ。
 
-**実践的な推奨事項:**
+### マイクロサービス構築の実践原則
 
-マイクロサービスを構築する際は、以下の点を意識すると良い：
+具体的には、以下を意識すると良い：
 
-- サービス境界（垂直分解）が最も重要な分離メカニズム
-- サービス内部は見通しの良い3層構造で十分（handler → service → repository）
-- 余計なレイヤー（水平分解）を持ち込むのは極力避ける
-- 複雑性はサービス間に分散させ、各サービスは単純に保つ
+1. **サービス境界を最優先に**：垂直分解（ビジネス機能での分割）で複雑性を分散
+2. **サービス内部はシンプルに**：見通しの良い3層構造（handler → service → repository）で十分
+3. **余計な抽象化を避ける**：Hexagonal/Cleanのような複雑なレイヤー構造は不要
+4. **リポジトリの抽象化**：複数の実装を切り替えるためであり、テスト目的ではない
 
 これだけでも、なかなか保守しやすいシステムになる。
 
-**選択の基準:**
+### どちらを選ぶべきか
 
-どちらのアプローチを選ぶべきかは、構築するシステムの性質による：
+構築するシステムの性質によって選択が変わる：
 
-- **モノリシックアプリケーション**を構築する場合 → 水平分解（Hexagonal/Clean Architecture）は有効
-- **マイクロサービス**を構築する場合 → 垂直分解（各サービスはシンプルな構造で十分）
+| システムの種類 | 推奨アプローチ | 理由 |
+|---------------|---------------|------|
+| モノリシックアプリケーション | 水平分解（Hexagonal/Clean） | アプリケーション内部の複雑性管理に有効 |
+| マイクロサービス | 垂直分解のみ | サービス境界が分離を提供、内部はシンプルに |
+| 小規模システム | モノリス推奨 | マイクロサービスは複雑性のコストが高い[^arch8] |
 
-ただし、小規模なシステムでマイクロサービスを採用するのは、かえって複雑性が増すので要注意だ。Martin Fowlerも言ってるように[^arch8]、単純なシステムならモノリスで十分。
+**注意**：小規模なシステムでマイクロサービスを採用するのは、かえって複雑性が増すので要注意だ。Martin Fowlerも言ってるように[^arch8]、単純なシステムならモノリスで十分。
 
 ---
 
 **脚注（アーキテクチャー）**:
 
 [^ut]: <https://martinfowler.com/articles/mocksArentStubs.html#SoShouldIBeAClassicistOrAMockist>
+[^arch18]: Emergent Architecture（創発的アーキテクチャー）、アジャイル開発において、アーキテクチャーは開発を通じて段階的に発見・形成されるという考え方。完全な事前設計ではなく、反復的な実装とリファクタリングを通じて適切な構造が現れる。ただし、Intentional Architecture（意図的なアーキテクチャー）とのバランスが重要とされる。Ruth MalanとDana Bredemeyerの「Visual Architecting Process」も、スケッチやプロトタイプを通じてアーキテクチャーを発見していく反復的プロセスを提唱している <https://dilankam.medium.com/balancing-emergent-design-and-intentional-architecture-in-agile-software-development-889b07d5ccb9>
 [^soc]: Edsger W. Dijkstra, "On the Role of Scientific Thought" (1974), EWD447. 関心の分離（Separation of Concerns）の概念を提唱。ソフトウェアの複雑性に対処するには、問題を分割して各側面に個別に集中できるようにすることが基本。Dijkstraの原典として必読。ソフトウェアエンジニアなら一度は読んでおきたい <https://www.cs.utexas.edu/~EWD/transcriptions/EWD04xx/EWD447.html>
 [^ewd]: Edsger W. Dijkstra, 知らない人は居ない、構造化プログラミングの提唱者 <https://ja.wikipedia.org/wiki/%E3%82%A8%E3%83%89%E3%82%AC%E3%83%BC%E3%83%BB%E3%83%80%E3%82%A4%E3%82%AF%E3%82%B9%E3%83%88%E3%83%A9>
 [^arch1]: マイクロサービス風の実装。完全なマイクロサービスアーキテクチャではないが、サービス指向の設計原則を部分的に採用した実装を指す
-[^arch2]: Martin Fowler, "Microservices Guide" (2014), <https://martinfowler.com/microservices/> マイクロサービスの基礎的な定義。各サービスがビジネス能力中心に構築され、独立したプロセスで実行。マイクロサービスの基本を理解するなら、まずはこれから
+[^arch2]: Martin Fowler & James Lewis, "Microservices" (2014), <https://martinfowler.com/articles/microservices.html> マイクロサービスアーキテクチャの原典。「単一のアプリケーションを小さなサービス群の組み合わせとして構築する手法であり、個々のサービスは自身のプロセス上で動作し、HTTPのリソースAPIなど軽量の機構により通信を行う」と定義。ビジネス機能を中心に構築、自動デプロイ、エンドポイントのインテリジェンス、言語とデータの分散制御が特徴。この記事がマイクロサービスを世界的に広めた。日本語訳も参考になる <https://kimitok.hateblo.jp/entry/2014/11/09/211820>
+[^arch19]: Sam Newman, "Building Microservices, 2nd Edition" (2021), <https://samnewman.io/books/building_microservices_2nd_edition/> マイクロサービスを「小さく、自律的で、協調して動作するサービス（small, autonomous services that work together）」と定義。核心的な特性として、(1)独立したデプロイ可能性（Independent Deployability）- 他のサービスに影響を与えずにデプロイできる、(2)情報隠蔽（Information Hiding）- 各サービスがその実装の詳細を隠す、の2つを挙げる。実践的な観点からマイクロサービスの本質を凝縮した定義
+[^arch20]: AWS, Azure, Google Cloudの各クラウドプロバイダーは、マイクロサービスを「明確に定義されたAPIを通じて通信する小さな独立したサービスで構成されるアーキテクチャ」と定義し、運用上の特性として拡張性（スケーラビリティ）、回復性（レジリエンス）、個別デプロイ可能性を強調している。AWS: <https://aws.amazon.com/microservices/> Azure: <https://learn.microsoft.com/ja-jp/azure/architecture/guide/architecture-styles/microservices> Google Cloud: <https://cloud.google.com/learn/what-is-microservices-architecture>
 [^arch3]: DZone, "Vertical vs. Horizontal Decomposition of Responsibilities" (2020), <https://dzone.com/articles/vertical-vs-horizontal-decomposition-of-responsibi> 垂直分解と水平分解の対比を解説。垂直分解がビジネス機能単位での独立性を高める。この対比を理解するのに、なかなか良い記事
 [^arch4]: Alistair Cockburn, "Hexagonal Architecture" (2005年9月4日、最終更新2025年), <https://alistair.cockburn.us/hexagonal-architecture> 単一のアプリケーションを中心に、内部と外部の技術要素を分離する設計パターン。古典的だが、今でも有用な考え方
 [^arch5]: Robert C. Martin, "The Clean Architecture" (2012年8月13日), <https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html> 単一アプリケーション内部を4つの同心円状のレイヤー(Entities, Use Cases, Interface Adapters, Frameworks & Drivers)に分割。Uncle Bobの記事は、いつ読んでも勉強になる
