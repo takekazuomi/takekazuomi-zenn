@@ -308,3 +308,5 @@ if deploymentMode == "monolith" {
 - Sam Newman, "Monolith to Microservices" (2019)
 - Simon Brown, "Software Architecture for Developers" (2022)
 - Martin Fowler, "MonolithFirst" (2015), https://martinfowler.com/bliki/MonolithFirst.html
+- https://shopify.engineering/deconstructing-monolith-designing-software-maximizes-developer-productivity
+- https://zenn.dev/loglass/articles/d2ea268a7522be 「縦と横で捉えるモジュラーモノリスの構造」は上手い表現
