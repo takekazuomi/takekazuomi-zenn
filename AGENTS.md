@@ -28,11 +28,64 @@ Zenn技術記事管理リポジトリ。Markdownで記事を執筆し、GitHub�
 ```bash
 command make install        # 依存関係インストール
 command make up             # プレビューサーバー起動（http://localhost:8000）
+command make svg-generate   # アスキーアートからSVG生成
+command make svg-watch      # ファイル変更監視でSVG自動生成
+command make dev            # 開発モード（SVG監視 + プレビュー）
 command make clean          # node_modules削除
 npx zenn new:article        # 新規記事作成
 npx zenn new:article --slug article-name --title "タイトル" --type tech --emoji 📚  # オプション指定
 npx zenn preview            # プレビューサーバー起動（Makefile経由推奨）
 ```
+
+### PNG図表生成
+
+アスキーアート図から自動的にPNGを生成（Zenn対応形式）
+
+**前提条件**: svgbob_cli と resvg のインストールが必要
+
+```bash
+# 全ツール一括インストール
+command make install-tools
+
+# または個別インストール
+command make install-rust     # Rust/cargo
+command make install-svgbob   # svgbob_cli
+command make install-resvg    # resvg
+
+# インストール確認
+command make check-tools
+```
+
+**使い方**:
+
+1. アスキーアートファイルを `articles/draft/diagrams/` に配置:
+
+```bash
+# 例: articles/draft/diagrams/my-diagram.txt
+┌─────┐
+│ Box │
+└─────┘
+```
+
+2. 記事内で画像参照:
+
+```markdown
+![図の説明](/images/my-diagram.png)
+```
+
+3. PNG生成:
+
+```bash
+# 手動生成
+command make svg-generate
+
+# 自動監視モード（開発時推奨）
+command make dev
+```
+
+4. 生成されたPNGは `images/` ディレクトリに配置される
+
+**注意**: Zennは複数行のHTMLコメントに非対応のため、アスキーアートは外部ファイルで管理
 
 ## ディレクトリ構造
 
