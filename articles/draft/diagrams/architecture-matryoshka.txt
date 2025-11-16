@@ -1,0 +1,13 @@
+インターネットサービス全体
+├── クライアントアプリ（Presentation Layer）
+│   ├── UI Components
+│   ├── State Management
+│   └── API Client
+│
+└── サーバーサービス（Business Logic + Data Layer）
+    ├── マイクロサービス A
+    │   ├── handler
+    │   ├── service
+    │   └── repository
+    ├── マイクロサービス B
+    └── マイクロサービス C
