@@ -17,7 +17,7 @@ published: true
 
 ## インストール
 
-### mise のインストール
+**mise のインストール**
 
 ```bash
 curl https://mise.run | sh
@@ -25,7 +25,7 @@ curl https://mise.run | sh
 
 デフォルトで `~/.local/bin/mise` にインストールされる。
 
-### activate 設定
+**activate 設定**
 
 `~/.zshrc` に追加（prezto初期化の後）：
 
@@ -57,14 +57,14 @@ mkdir -p ~/.zprezto/modules/completion/external/src
 mise completion zsh > ~/.zprezto/modules/completion/external/src/_mise
 ```
 
-### キャッシュクリア
+**キャッシュクリア**
 
 ```bash
 rm -f ~/.zcompdump
 rm -rf ~/.cache/prezto/*
 ```
 
-### シェル再起動
+**シェル再起動**
 
 ```bash
 exec zsh
@@ -87,13 +87,13 @@ which node
 
 ## トラブルシューティング
 
-### エラー: usage CLI not found
+**エラー: usage CLI not found**
 
 ```bash
 mise use -g usage
 ```
 
-### 補完が効かない場合
+**補完が効かない場合**
 
 ```bash
 # usage CLIの確認
