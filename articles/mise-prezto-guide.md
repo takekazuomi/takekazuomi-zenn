@@ -129,7 +129,7 @@ mise uninstall node@18
 - 設定ファイルは `~/.config/mise/config.toml` に保存
 - usage[^4] CLI は mise の補完を動的に生成するために必要
 
-[1]: [mise 公式ドキュメント](https://mise.jdx.dev/)
-[2]: <https://github.com/sorin-ionescu/prezto>
-[3]: <https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html>
-[4]: [usage CLI](https://usage.jdx.dev/)
+[^1]: [mise 公式ドキュメント](https://mise.jdx.dev/)
+[^2]: <https://github.com/sorin-ionescu/prezto>
+[^3]: <https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html>
+[^4]: [usage CLI](https://usage.jdx.dev/)
