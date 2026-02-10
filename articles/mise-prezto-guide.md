@@ -3,17 +3,17 @@ title: "prezto ユーザーのための mise 簡単ガイド"
 emoji: "🧐"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["howto", "prezto", "mise", "紹介"]
-published: false
+published: true
 ---
 
-最近、[mise][1]を使い始めたので紹介。makeは時代遅れとか、プロジェクト毎に依存するツール類が重すぎるとかいろいろあり。プロジェクトメンバーにお勧めされたのもあり、mise を使い始めた。
+最近、mise[^1]を使い始めたので紹介。makeは時代遅れとか、プロジェクト毎に依存するツール類が重すぎるとかいろいろあり。プロジェクトメンバーにお勧めされたのもあり、mise を使い始めた。
 今のところ気に入っている。「tasks が補完に出てくると便利なので、`mise completion` すると良いよ」ってだけの話ではある。
 
 ## 前提条件
 
 - Ubuntu 22.04 LTS
-- zsh + [prezto][2] がインストール済み
-- [XDG Base Directory][3] に従った環境（`~/.config`, `~/.local` など）
+- zsh + prezto[^2] がインストール済み
+- XDG Base Directory[^3] に従った環境（`~/.config`, `~/.local` など）
 
 ## インストール
 
@@ -127,7 +127,7 @@ mise uninstall node@18
 
 - mise は `~/.local/share/mise` にツールをインストール
 - 設定ファイルは `~/.config/mise/config.toml` に保存
-- [usage][4] CLI は mise の補完を動的に生成するために必要
+- usage[^4] CLI は mise の補完を動的に生成するために必要
 
 [1]: [mise 公式ドキュメント](https://mise.jdx.dev/)
 [2]: <https://github.com/sorin-ionescu/prezto>
