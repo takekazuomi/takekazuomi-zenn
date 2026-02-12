@@ -1,0 +1,20 @@
+# Zenn記事向けmarkdownlint設定
+ignores:
+  - "**/tmp/**"
+  - "draft/**"
+  - "docs/notes/**"
+
+config:
+  # 行長制限を無効化（日本語記事では80文字制限は厳しすぎる）
+  MD013: false
+  # 複数のh1を許可（Zennはフロントマターでtitleを設定）
+  MD025: false
+  # コマンド例での$を許可
+  MD014: false
+  # 最初の行がh1である必要なし（フロントマターがある）
+  MD041: false
+  # インラインHTMLを許可（Zenn拡張記法で使用）
+  MD033: false
+  # 同一見出しは兄弟間でのみチェック
+  MD024:
+    siblings_only: true

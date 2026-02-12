@@ -1,5 +1,6 @@
 [tools]
 node = "24"
+markdownlint-cli2 = "latest"
 
 [tasks.preview]
 description = "Zenn プレビューサーバーを起動"
@@ -17,3 +18,11 @@ run = "npx zenn new:book"
 [tasks.install]
 description = "依存関係をインストール"
 run = "npm install"
+
+[tasks.lint]
+description = "Markdownファイルをリント"
+run = "markdownlint-cli2 'articles/**/*.md'"
+
+[tasks.lint-fix]
+description = "Markdownファイルをリントして修正"
+run = "markdownlint-cli2 --fix 'articles/**/*.md'"
