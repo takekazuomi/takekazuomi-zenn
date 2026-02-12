@@ -3,9 +3,32 @@ ignorePaths: []
 dictionaryDefinitions: []
 dictionaries: []
 words:
+  - Borland
+  - Brumme
+  - CLSID
+  - COMCTL
   - Edsger
+  - Hanselman
+  - Hyrum
+  - liba
+  - libb
+  - libbase
+  - libfoo
+  - libuser
+  - LINQ
+  - monomorphization
+  - MSVC
+  - MSVCR
+  - MSVCRT
+  - Pratschner
+  - prezto
+  - pyenv
+  - SONAME
+  - Strahl
+  - unobtanium
+  - vtable
+  - XCOPY
   - Zenn
   - zprezto
-  - prezto
 ignoreWords: []
 import: []
