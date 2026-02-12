@@ -5,21 +5,23 @@
 
 ## 開発環境
 
-このプロジェクトは[Volta](https://volta.sh/)を使用してNode.jsとnpmのバージョンを管理している。
+### 前提条件
 
-## 使用方法
+- [mise](https://mise.jdx.dev/) がインストール済み
 
-### 依存関係のインストール
+### セットアップ
+
 ```bash
-make install
+mise install     # Node.js をインストール
+mise run install # npm パッケージをインストール
 ```
 
-### プレビューサーバーの起動
-```bash
-make up
-```
+### タスク
 
-### その他のコマンド
-```bash
-make clean  # node_modulesの削除
-```
+| コマンド               | 説明                   |
+| ---------------------- | ---------------------- |
+| `mise run preview`     | プレビューサーバー起動 |
+| `mise run new-article` | 新規記事作成           |
+| `mise run new-book`    | 新規本作成             |
+
+> 💡 `mise run preview` は `mise preview` と省略可能（[詳細](https://mise.jdx.dev/tasks/)）

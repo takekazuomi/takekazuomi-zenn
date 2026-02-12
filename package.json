@@ -13,9 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "zenn-cli": "^0.2.10"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2"
+    "zenn-cli": "^0.4.5"
   }
 }
