@@ -20,8 +20,10 @@ words:
   - MSVC
   - MSVCR
   - MSVCRT
+  - muxer
   - Pratschner
   - prezto
+  - putenv
   - pyenv
   - runtimeconfig
   - SONAME
