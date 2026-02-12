@@ -1,0 +1,19 @@
+[tools]
+node = "24"
+
+[tasks.preview]
+description = "Zenn プレビューサーバーを起動"
+alias = "up"
+run = "npx zenn preview"
+
+[tasks.new-article]
+description = "新規記事を作成"
+run = "npx zenn new:article"
+
+[tasks.new-book]
+description = "新規本を作成"
+run = "npx zenn new:book"
+
+[tasks.install]
+description = "依存関係をインストール"
+run = "npm install"
