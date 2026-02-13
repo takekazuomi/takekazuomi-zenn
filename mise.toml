@@ -15,7 +15,7 @@ run = "npx zenn new:article"
 description = "新規本を作成"
 run = "npx zenn new:book"
 
-[tasks.install]
+[tasks.setup]
 description = "依存関係をインストール"
 run = "npm install"
 
@@ -26,3 +26,14 @@ run = "markdownlint-cli2 'articles/**/*.md'"
 [tasks.lint-fix]
 description = "Markdownファイルをリントして修正"
 run = "markdownlint-cli2 --fix 'articles/**/*.md'"
+
+[tasks.drawio-export]
+description = "draw.ioファイルをPNG（XML埋め込み）にエクスポート"
+run = """
+for f in images/*.drawio; do
+  [ -f "$f" ] || continue
+  ~/.local/bin/drawio --appimage-extract-and-run --export --format png --scale 2 \
+    --embed-diagram \
+    --output "${f%.drawio}.png" "$f"
+done
+"""
