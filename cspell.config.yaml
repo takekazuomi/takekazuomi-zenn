@@ -3,6 +3,7 @@ ignorePaths: []
 dictionaryDefinitions: []
 dictionaries: []
 words:
+  - baleenstudio
   - Borland
   - Brumme
   - CLSID
@@ -10,6 +11,7 @@ words:
   - Edsger
   - Hanselman
   - Hyrum
+  - jgraph
   - liba
   - libb
   - libbase
