@@ -9,7 +9,7 @@ publication_name: baleenstudio
 
 ## はじめに
 
-[青空](https://bsky.app/profile/drawio.bsky.social/post/3meitpzppec2s)に、draw.io mcp[^1]なるものが流れてたので試して見た。今まで、draw.io は、テキストで書くものに比べ、手間がかかりレイアウトの制約が多いものにしか使わなかったのだが、MCPをかませると、AIが良い感じにやってくれそうで期待値が高い。
+[青空](https://bsky.app/profile/drawio.bsky.social/post/3meitpzppec2s)に、draw.io mcp[^1]なるものが流れてたので試してみた。今まで、draw.io は、テキストで書くものに比べ、手間がかかりレイアウトの制約が多いものにしか使わなかったのだが、MCPをかませると、AIが良い感じにやってくれそうで期待値が高い。
 
 最近使い始めた、mise をベースにして、Claude Code から DrawIO MCP を使う設定を紹介する。npx を直接使う標準的な設定は公式ドキュメント[^2]で十分カバーされているので、ここでは mise 環境特有の設定に焦点を当てる。
 
@@ -126,18 +126,14 @@ Claude は以下のような XML を生成してブラウザで開く：
 - `fillColor` / `strokeColor` - 背景色と枠線色。役割ごとに色分けすると見やすい
 
 XML 形式では各ノードの位置（x, y）とサイズ（width, height）を明示的に指定できるため、draw.io で開いた後の微調整が容易になる。
-この時に、`bubble-sort-flowchart.drawio.png` のような名前にしておいて、元のxmlを埋め込んでおくと、VSCode のdraw.io extension[^7]で編集できるので便利である。
 
 生成された図の例：
 
 ![バブルソートのフローチャート](/images/bubble-sort-flowchart.drawio.png)
 
-VSCodeの編集例:
-![alt text](/images/vscode-drawio.png)
-
 ## 実践例2：Azure ACA Landing Zone アーキテクチャ図
 
-次に、`open_drawio_xml` を使って Azure Container Apps のアーキテクチャ図を描く。Azure の公式 Landing Zone Accelerator[^6] を参考にした、ハブ・スポーク構成の図を依頼してみる：
+次に、`open_drawio_xml` を使って Azure Container Apps のアーキテクチャ図を描く。Azure の公式 Landing Zone Accelerator[^5] を参考にした、ハブ・スポーク構成の図を依頼してみる：
 
 ```text
 Azure Container Apps Landing Zone のアーキテクチャ図を描いて。
@@ -257,7 +253,9 @@ done
 
 `--embed-diagram` により、PNG は画像として表示できるだけでなく、draw.io にドラッグ＆ドロップすれば編集可能な状態で開ける。
 
+:::message alert
 ここで残念なお知らせがある、drawio desktop が、electron のアプリになっており、WSL2だとGUI(Wayland、X11)が必要で、さらにmiseで管理できない。WSL2環境なら、Windows版を入れて、パスを切っておくとかすれば良さそうだが。残念ながら試したことはない。
+:::
 
 ### なぜ PNG を Single Source of Truth にするか
 
@@ -278,6 +276,12 @@ PNG に XML が埋め込まれていれば：
 - `.drawio` ファイルの管理が不要
 - PNG が単独で流通しても編集可能
 
+この時に、`bubble-sort-flowchart.drawio.png` のような名前にしておいて、元のxmlを埋め込んでおくと、VSCode のdraw.io extension[^6]で編集できるので便利である。
+
+こんな風に、VSCodeで開いて編集することもできる。
+
+![alt text](/images/vscode-drawio.png)
+
 この記事中の XML サンプルはあくまで解説用。実際の図は PNG に埋め込まれた XML がソースとなっている。
 
 ## まとめ
@@ -292,5 +296,5 @@ DrawIO Desktop が、miseで管理できなかったのは、返す返すも残�
 [^2]: @drawio/mcp on npm - <https://www.npmjs.com/package/@drawio/mcp>
 [^3]: Shims - mise - <https://mise.jdx.dev/dev-tools/shims.html>
 [^4]: IDE Integration - mise - <https://mise.jdx.dev/ide-integration.html>
-[^6]: Azure/aca-landing-zone-accelerator - <https://github.com/Azure/aca-landing-zone-accelerator>
-[^7]: Draw.io Integration <https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio>
+[^5]: Azure/aca-landing-zone-accelerator - <https://github.com/Azure/aca-landing-zone-accelerator>
+[^6]: Draw.io Integration <https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio>
