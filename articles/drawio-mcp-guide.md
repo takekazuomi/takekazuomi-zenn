@@ -126,7 +126,7 @@ Claude は以下のような XML を生成してブラウザで開く：
 - `fillColor` / `strokeColor` - 背景色と枠線色。役割ごとに色分けすると見やすい
 
 XML 形式では各ノードの位置（x, y）とサイズ（width, height）を明示的に指定できるため、draw.io で開いた後の微調整が容易になる。
-この時に、`bubble-sort-flowchart.drawio.png` のような名前にしておいて、元のxmlを埋め込んでおくと、VCode のdraw.io extension[^7]で編集できるので便利である。
+この時に、`bubble-sort-flowchart.drawio.png` のような名前にしておいて、元のxmlを埋め込んでおくと、VSCode のdraw.io extension[^7]で編集できるので便利である。
 
 生成された図の例：
 
