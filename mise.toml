@@ -1,23 +1,20 @@
 [tools]
 node = "24"
+"npm:zenn-cli" = "0.4"
 markdownlint-cli2 = "latest"
 
 [tasks.preview]
 description = "Zenn プレビューサーバーを起動"
 alias = "up"
-run = "npx zenn preview"
+run = "zenn preview"
 
 [tasks.new-article]
 description = "新規記事を作成"
-run = "npx zenn new:article"
+run = "zenn new:article"
 
 [tasks.new-book]
 description = "新規本を作成"
-run = "npx zenn new:book"
-
-[tasks.setup]
-description = "依存関係をインストール"
-run = "npm install"
+run = "zenn new:book"
 
 [tasks.lint]
 description = "Markdownファイルをリント"
