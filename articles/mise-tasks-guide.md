@@ -85,7 +85,7 @@ mise tasks
 
 出力例：
 
-```
+```text
 new-article   新規記事を作成
 new-book      新規本を作成
 preview       Zenn プレビューサーバーを起動
