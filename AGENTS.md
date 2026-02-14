@@ -14,78 +14,43 @@ Zenn技術記事管理リポジトリ。Markdownで記事を執筆し、GitHub�
 
 ## 開発環境
 
-- Node.jsバージョン管理: [Volta](https://volta.sh/)使用
-- Node.js: 22.21.1
-- npm: 10.2.3
-- zenn-cli: ^0.2.9
+- ツールバージョン管理: [mise](https://mise.jdx.dev/)使用（mise.toml で定義）
+- Node.js: 24
+- zenn-cli: 0.4
+- markdownlint-cli2: latest
 
 ## コマンド実行
-
-**重要**: zsh with zprezto の場合は、`make`コマンド実行時は必ず`command make`を使用（[Issue #1849](https://github.com/anthropics/claude-code/issues/1849)対応）
 
 ### 主要コマンド
 
 ```bash
-command make install        # 依存関係インストール
-command make up             # プレビューサーバー起動（http://localhost:8000）
-command make svg-generate   # アスキーアートからSVG生成
-command make svg-watch      # ファイル変更監視でSVG自動生成
-command make dev            # 開発モード（SVG監視 + プレビュー）
-command make clean          # node_modules削除
-npx zenn new:article        # 新規記事作成
-npx zenn new:article --slug article-name --title "タイトル" --type tech --emoji 📚  # オプション指定
-npx zenn preview            # プレビューサーバー起動（Makefile経由推奨）
+mise run preview            # プレビューサーバー起動（http://localhost:8000）
+mise run new-article        # 新規記事作成
+mise run lint               # Markdownファイルのリント
+mise run lint-fix           # Markdownファイルのリント＋自動修正
+mise run drawio-export      # draw.ioファイルをPNGにエクスポート
 ```
 
-### PNG図表生成
+### 図表生成
 
-アスキーアート図から自動的にPNGを生成（Zenn対応形式）
-
-**前提条件**: svgbob_cli と resvg のインストールが必要
-
-```bash
-# 全ツール一括インストール
-command make install-tools
-
-# または個別インストール
-command make install-rust     # Rust/cargo
-command make install-svgbob   # svgbob_cli
-command make install-resvg    # resvg
-
-# インストール確認
-command make check-tools
-```
+draw.io で図を作成し、PNGにエクスポート（Zenn対応形式）。
 
 **使い方**:
 
-1. アスキーアートファイルを `articles/draft/diagrams/` に配置:
+1. draw.io で図を作成し `images/*.drawio` として保存
+2. PNG エクスポート:
 
 ```bash
-# 例: articles/draft/diagrams/my-diagram.txt
-┌─────┐
-│ Box │
-└─────┘
+mise run drawio-export
 ```
 
-2. 記事内で画像参照:
+3. 記事内で画像参照:
 
 ```markdown
 ![図の説明](/images/my-diagram.png)
 ```
 
-3. PNG生成:
-
-```bash
-# 手動生成
-command make svg-generate
-
-# 自動監視モード（開発時推奨）
-command make dev
-```
-
-4. 生成されたPNGは `images/` ディレクトリに配置される
-
-**注意**: Zennは複数行のHTMLコメントに非対応のため、アスキーアートは外部ファイルで管理
+**注意**: 旧 svgbob_cli/resvg によるアスキーアート変換パイプラインは廃止済み。`articles/draft/diagrams/*.txt` は参考として残存
 
 ## ディレクトリ構造
 
@@ -101,7 +66,7 @@ command make dev
 │       └── *.md
 ├── images/          # 画像ファイル - リポジトリルート直下必須
 │   └── *.{png,jpg,jpeg,gif,webp}  # 対応拡張子、3MB以下
-└── package.json     # zenn-cli依存関係定義
+└── mise.toml        # mise ツール・タスク定義
 ```
 
 ## 記事ファイル形式
@@ -193,7 +158,7 @@ graph TD;
 
 ## 公開フロー
 
-1. ローカルで執筆・プレビュー（`command make up`）
+1. ローカルで執筆・プレビュー（`mise run preview`）
 2. `published: true`に設定
 3. GitHubにpush
 4. Zennが自動デプロイ・公開
