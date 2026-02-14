@@ -18,6 +18,7 @@ words:
   - libfoo
   - libuser
   - LINQ
+  - Makefiles
   - monomorphization
   - MSVC
   - MSVCR
