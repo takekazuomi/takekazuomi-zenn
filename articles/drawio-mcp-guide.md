@@ -3,7 +3,7 @@ title: "mise × Claude Code で DrawIO MCP を使う"
 emoji: "🎨"
 type: "tech"
 topics: ["drawio", "mcp", "claude", "mise", "diagram"]
-published: false
+published: true
 publication_name: baleenstudio
 ---
 
@@ -246,7 +246,7 @@ for f in images/*.drawio; do
   [ -f "$f" ] || continue
   drawio --export --format png --scale 2 \
     --embed-diagram \
-    --output "${f%.drawio}..drawio.png" "$f"
+    --output "${f%.drawio}.drawio.png" "$f"
 done
 """
 ```

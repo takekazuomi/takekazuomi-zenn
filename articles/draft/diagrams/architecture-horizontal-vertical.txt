@@ -1,3 +1,5 @@
+# NOTE: svgbob_cli/resvg による変換は廃止。draw.io に移行予定。
+
 【水平分解 - Hexagonal/Clean Architecture】
 ┌─────────────────────────────────────┐
 │  Application                        │
