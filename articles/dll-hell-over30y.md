@@ -4,6 +4,7 @@ emoji: "🏛️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["dotnet", "windows", "csharp", "dll", "architecture"]
 published: true
+publication_name: baleenstudio
 ---
 
 miseに、dotnet(C#)を管理させようとして、dotnetの独自性に気が付かせられた。Microsoftには、コンシューマー向けの独自OSと、幅広い開発者コミュニティを抱え、かなり長い間（今も）バージョン問題に取り組んできた経験がある。その結果が、dotnet に集約されている。ここでは、その長い歴史を振り返り、現在の実装に至る道を再度辿る。
