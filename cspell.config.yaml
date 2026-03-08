@@ -3,12 +3,18 @@ ignorePaths: []
 dictionaryDefinitions: []
 dictionaries: []
 words:
+  - Addy
   - baleenstudio
+  - Birgitta
+  - Böckeler
   - Borland
   - Brumme
   - CLSID
+  - Collina
   - COMCTL
   - Edsger
+  - evals
+  - Gloaguen
   - Hanselman
   - Hyrum
   - jgraph
@@ -19,19 +25,27 @@ words:
   - libuser
   - LINQ
   - Makefiles
+  - martinfowler
+  - Matteo
   - monomorphization
   - MSVC
   - MSVCR
   - MSVCRT
   - muxer
+  - nielstron
+  - Osmani
+  - pamelafox
   - Pratschner
   - prezto
   - pyenv
   - runtimeconfig
   - SONAME
   - Strahl
+  - Thoughtworks
   - unobtanium
+  - Upsun
   - vtable
+  - Willison
   - XCOPY
   - Zenn
   - zprezto
