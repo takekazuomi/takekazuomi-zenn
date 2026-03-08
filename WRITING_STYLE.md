@@ -313,3 +313,9 @@ $ コマンド
 - [ ] 「最後に」セクションで適切にまとめられているか
 - [ ] 読者との距離感は近いか（堅すぎないか）
 
+## 参考
+
+- <https://www.ignorance.ai/p/the-field-guide-to-ai-slop>
+- <https://github.com/hardikpandya/stop-slop>
+- <https://arxiv.org/abs/2509.19163>
+- <https://zenn.dev/transmedia_blog/articles/ai_authorship_signals>
