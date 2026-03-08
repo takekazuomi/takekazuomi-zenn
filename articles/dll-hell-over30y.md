@@ -3,7 +3,7 @@ title: "DLL Hell から .NET の自己完結型デプロイまで：30年の依�
 emoji: "🏛️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["dotnet", "windows", "csharp", "dll", "architecture"]
-published: true
+published: false
 publication_name: baleenstudio
 ---
 
