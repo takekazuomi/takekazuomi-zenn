@@ -3,7 +3,8 @@ title: AIコーディングの原則
 emoji: "🤖"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["ai", "aicoding", "llm"]
-published: true
+published: false
+publication_name: baleenstudio
 ---
 
 AIコーディングツールを使い始めて、しばらく経った。進歩は目覚ましく、便利だし役に立つ。一方で、OSS界隈では[AI Slop](https://arxiv.org/abs/2509.19163) (AIが生成する低品質なコードやテキスト) が問題になっている。個人なら自分で気づいて直せるが、チームでは人数分だけ増幅される。誰かが流したSlopのレビューとリワークにチーム全体が巻き込まれ、AIコーディングのメリットを上回る生産性の低下を招く。この記事では、チームでその罠に落ちないための原則を定義する。
