@@ -3,7 +3,7 @@ title: AIコーディングの原則
 emoji: "🤖"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["ai", "aicoding", "llm"]
-published: false
+published: true
 publication_name: baleenstudio
 ---
 
