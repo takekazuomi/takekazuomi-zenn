@@ -6,7 +6,7 @@
 - 開発コマンドとワークフロー
 - Zenn固有のMarkdown記法と公開フロー
 
-記事執筆時の文章スタイルガイドラインは[WRITING_STYLE.md](WRITING_STYLE.md)を参照。
+記事執筆時の文章スタイルガイドラインは[WRITING_STYLE.md](docs/WRITING_STYLE.md)を参照。
 
 ## プロジェクト概要
 
@@ -189,4 +189,4 @@ cspell.config.yamlで設定管理。カスタム辞書は`words`セクション�
 
 ### 文章スタイル
 
-記事執筆時の文章スタイルガイドラインは[WRITING_STYLE.md](WRITING_STYLE.md)を参照。
+記事執筆時の文章スタイルガイドラインは[WRITING_STYLE.md](docs/WRITING_STYLE.md)を参照。
