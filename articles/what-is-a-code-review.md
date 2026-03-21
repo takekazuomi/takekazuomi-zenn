@@ -56,17 +56,17 @@ AIは、知っていると思っていたことを問い直させる。知能と
 
 ---
 
-[^1]: 拙著「AIコーディングの原則」 https://zenn.dev/baleenstudio/articles/ai-coding-principles
-[^2]: Bacchelli, A. & Bird, C. (2013). "Expectations, Outcomes, and Challenges of Modern Code Review." *ICSE 2013*. https://sback.it/publications/icse2013.pdf
-[^3]: Czerwonka, J. et al. (2015). "Code Reviews Do Not Find Bugs: How the Current Code Review Best Practice Slows Us Down." *ICSE 2015*. https://www.microsoft.com/en-us/research/wp-content/uploads/2015/05/PID3556473.pdf
-[^4]: Winters, T. et al. (2020). "Software Engineering at Google." Chapter 9: Code Review. https://abseil.io/resources/swe-book/html/ch09.html
-[^5]: Google Engineering Practices Documentation. "The Standard of Code Review." https://google.github.io/eng-practices/review/reviewer/standard.html
-[^6]: Naur, P. (1985). "Programming as Theory Building." *Microprocessing and Microprogramming*, 15(5), 253-261. https://pages.cs.wisc.edu/~remzi/Naur.pdf
-[^7]: Pichai, S. (2024). Alphabet Q3 2024 決算報告。 https://abc.xyz/2024-q3-earnings-call/
-[^8]: Vogels, W. (2025). AWS re:Invent 2025 closing keynote "The Renaissance Developer." https://aws.amazon.com/blogs/aws/aws-weekly-roundup-aws-reinvent-keynote-recap-on-demand-videos-and-more-december-8-2025/
-[^9]: Jain, A. (2025). "How to Kill the Code Review." Latent.Space. https://www.latent.space/p/reviews-dead
-[^10]: Poll, D. (2026). "Code Review Is Not About Catching Bugs." https://www.davidpoll.com/2026/02/code-review-is-not-about-catching-bugs/
+[^1]: 自著「AIコーディングの原則」。AIコーディング時代の責任は人間にあり、判断を自分で下しドキュメントに投資することが生産性の鍵とする内容。 https://zenn.dev/baleenstudio/articles/ai-coding-principles
+[^2]: Bacchelli, A. & Bird, C. (2013). "Expectations, Outcomes, and Challenges of Modern Code Review." *ICSE 2013*. コードレビューの成果としてバグ発見以上にコード改善・知識移転・チーム意識向上が主要な価値であることを調査で解明。 https://sback.it/publications/icse2013.pdf
+[^3]: Czerwonka, J. et al. (2015). "Code Reviews Do Not Find Bugs: How the Current Code Review Best Practice Slows Us Down." *ICSE 2015*. レビューコメントの過半数がバグではなくコード改善に関するフィードバックであり、バグ発見手段としてのレビューは非効率との結論。 https://www.microsoft.com/en-us/research/wp-content/uploads/2015/05/PID3556473.pdf
+[^4]: Winters, T. et al. (2020). "Software Engineering at Google." Chapter 9: Code Review. コードレビューは品質管理のみならず知識共有・コードベースの一貫性・エンジニア文化を支える基盤的プロセスとする内容。 https://abseil.io/resources/swe-book/html/ch09.html
+[^5]: Google Engineering Practices Documentation. "The Standard of Code Review." レビュアーは完璧さではなくコード全体の健全性が継続的に改善されているかを基準に承認すべきとするガイドライン。 https://google.github.io/eng-practices/review/reviewer/standard.html
+[^6]: Naur, P. (1985). "Programming as Theory Building." *Microprocessing and Microprogramming*, 15(5), 253-261. プログラミングの本質はコード生成ではなく「理論構築」であり、プログラマーが持つ理論こそがソフトウェアの本体とする論文。 https://pages.cs.wisc.edu/~remzi/Naur.pdf https://cekrem.github.io/posts/programming-as-theory-building-naur/
+[^7]: Pichai, S. (2024). Alphabet Q3 2024 決算報告。Googleの新規コードの25%以上がAI生成であり、すべてエンジニアのレビューと承認を経てコミットされると報告。 https://abc.xyz/2024-q3-earnings-call/
+[^8]: Vogels, W. (2025). AWS re:Invent 2025 closing keynote "The Renaissance Developer." AI生成コードの速度が人間の理解速度を超えることで「検証負債（verification debt）」が生じると警告。 https://aws.amazon.com/blogs/aws/aws-weekly-roundup-aws-reinvent-keynote-recap-on-demand-videos-and-more-december-8-2025/
+[^9]: Jain, A. (2025). "How to Kill the Code Review." Latent.Space. AI時代には従来のコードレビューは現実的でなくなり、仕様定義と自動検証で品質を確保すべきとの主張。 https://www.latent.space/p/reviews-dead
+[^10]: Poll, D. (2026). "Code Review Is Not About Catching Bugs." コードレビューの目的はバグ発見ではなく、変更が製品として価値があるか判断する意思決定プロセスとの主張。 https://www.davidpoll.com/2026/02/code-review-is-not-about-catching-bugs/
 [^11]: CodeRabbitの2025年12月調査（470件のGitHub PR分析）では、AI共著PRは人間のみのPRと比較して重大欠陥が1.7倍、XSS脆弱性が2.74倍。 https://www.coderabbit.ai/blog/state-of-ai-vs-human-code-generation-report
 [^12]: Chelsea Troyはこれを「コンテキスト転送（context transfer）」と呼び、レビューの成功指標を「原作者が不在になっても開発を引き継げる状態の達成」と定義した。Naurのメンタルモデル共有と直接対応する概念。 https://chelseatroy.com/2019/12/18/reviewing-pull-requests/
 [^13]: GitHub Copilot Code Reviewは2025年4月にGA。6,000万件以上のレビューを実施しているが、人間の判断を補完する設計哲学。 https://github.blog/ai-and-ml/github-copilot/60-million-copilot-code-reviews-and-counting/
-[^14]: [^2] [^3] を参照している、日本語解説記事 https://zenn.dev/rakuten_tech/articles/code_review_antipatterns
+[^14]: [^2] [^3] を参照している日本語解説記事。コードレビューは「バグ発見」ではなく「知識共有とチーム協調」が本質であり、コミュニケーションの工夫で「学び」の文化へ転換できるとする内容。 https://zenn.dev/rakuten_tech/articles/code_review_antipatterns
