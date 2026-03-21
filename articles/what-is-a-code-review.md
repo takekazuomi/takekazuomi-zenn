@@ -18,7 +18,7 @@ Czerwonka et al.はさらに踏み込んで、「Code Reviews Do Not Find Bugs�
 
 ## メンタリングでもない
 
-Google SWEブックは、レビューにおける教育的コメントを「適切」と位置づけている。ただしそれは、コードベースの健全性という主目的に貢献する限りにおいての話だ。メンタリングが主目的化すると、レビューは「もう一つのハードル」に変質する。ジュニアの学習機会としてレビューを活用すること自体は悪くないが、それはレビューの副産物であり本質ではない。レビューをメンタリングの場と定義してしまうと、「十分に教育的でないレビュー」に罪悪感を覚えるようになる。それは本末転倒だ。
+Google SWEブックは、レビューにおける教育的コメントを「FYI」と位置づけている[^12]。ただしそれは、コードベースの健全性という主目的に貢献する限りにおいての話だ。メンタリングが主目的化すると、レビューは「もう一つのハードル」に変質する[^13]。ジュニアの学習機会としてレビューを活用すること自体は悪くないが、それはレビューの副産物であり本質ではない。レビューをメンタリングの場と定義してしまうと、「十分に教育的でないレビュー」に罪悪感を覚えるようになる。それは本末転倒だ。
 
 ## コードの意味をチームで共有する営み
 
@@ -30,7 +30,7 @@ Bacchelli & Birdの研究[^2]では、シニア開発者がこう証言した。
 
 コードレビューとは、このメンタルモデルをチームで共有する行為[^10]と言える。レビュアーはコードを読むことで書き手のメンタルモデルに触れ、自らのモデルと照合する。設計の意図、トレードオフの判断、変更の影響範囲。これらの共有こそがレビューの核心である。
 
-David Pollはこの核心をさらに鮮明に定式化した[^9]。テストは「コードが作者の意図通りに動くか」に答え、本番監視は「システムが実際に何をしているか」に答える。コードレビューが答えるのは「これは自分たちのプロダクトに組み込むべきか」だ。レビューが扱うのは正誤ではなく判断（judgment）である。ボトルネックはコードレビューでも本番検証でもない。判断こそが、自動化では代替できない希少な資源である。
+David Pollはこの核心をさらに鮮明に定式化した[^9] [^14]。テストは「コードが作者の意図通りに動くか」に答え、本番監視は「システムが実際に何をしているか」に答える。コードレビューが答えるのは「これは自分たちのプロダクトに組み込むべきか」だ。レビューが扱うのは正誤ではなく判断（judgment）である。ボトルネックはコードレビューでも本番検証でもない。判断こそが、自動化では代替できない希少な資源である。
 
 ## 考察：AI時代のコードレビュー
 
@@ -60,12 +60,15 @@ AIは、知っていると思っていたことを問い直させる。知能と
 
 [^1]: 自著「AIコーディングの原則」。AIコーディング時代の責任は人間にあり、判断を自分で下しドキュメントに投資することが生産性の鍵とする内容。 https://zenn.dev/baleenstudio/articles/ai-coding-principles
 [^2]: Bacchelli, A. & Bird, C. (2013). "Expectations, Outcomes, and Challenges of Modern Code Review." *ICSE 2013*. コードレビューの成果としてバグ発見以上にコード改善・知識移転・チーム意識向上が主要な価値であることを調査で解明。 https://sback.it/publications/icse2013.pdf
-[^3]: Czerwonka, J. et al. (2015). "Code Reviews Do Not Find Bugs: How the Current Code Review Best Practice Slows Us Down." *ICSE 2015*. レビューコメントの過半数がバグではなくコード改善に関するフィードバックであり、バグ発見手段としてのレビューは非効率との結論。 https://www.microsoft.com/en-us/research/wp-content/uploads/2015/05/PID3556473.pdf
+[^3]: Czerwonka, J. et al. (2015). "Code Reviews Do Not Find Bugs: How the Current Code Review Best Practice Slows Us Down." *ICSE 2015*. レビューコメントの過半数がバグではなくコード改善に関するフィードバックであり、バグ発見手段としてのレビューは非効率との結論。ただし、この結論に対してはkqr (2024) "Code Reviews Do Find Bugs" が統計的手法の問題を指摘し、「わずか15%の時間増加で60%の追加欠陥を発見」という先行研究データを提示してレビューの欠陥検出効率を再評価している。 https://www.microsoft.com/en-us/research/wp-content/uploads/2015/05/PID3556473.pdf https://entropicthoughts.com/code-reviews-do-find-bugs
 [^4]: Google Engineering Practices Documentation. "The Standard of Code Review." レビュアーは完璧さではなくコード全体の健全性が継続的に改善されているかを基準に承認すべきとするガイドライン。 https://google.github.io/eng-practices/review/reviewer/standard.html
-[^5]: Naur, P. (1985). "Programming as Theory Building." *Microprocessing and Microprogramming*, 15(5), 253-261. BNF（Backus-Naur Form）のNで知られるNaurが、プログラミングの本質はコード生成ではなく「理論構築」であると論じた論文。ここでの「理論」はメンタルモデルでありドメインモデルに相当する。 https://pages.cs.wisc.edu/~remzi/Naur.pdf https://cekrem.github.io/posts/programming-as-theory-building-naur/
+[^5]: Naur, P. (1985). "Programming as Theory Building." *Microprocessing and Microprogramming*, 15(5), 253-261. BNF（Backus-Naur Form）のNで知られるNaurが、プログラミングの本質はコード生成ではなく「理論構築」であると論じた論文。ここでの「理論」はメンタルモデルでありドメインモデルに相当する。LLM時代におけるNaurの再評価として、Gauer (2025) はLLMが既存の成果物から学ぶだけで本当の「理論」を獲得できないことを指摘し、プログラミングがテキスト生産ではなく理論構築活動であるというNaurの洞察を裏付けている。 https://pages.cs.wisc.edu/~remzi/Naur.pdf https://cekrem.github.io/posts/programming-as-theory-building-naur/ https://ratfactor.com/cards/naur-vs-llms
 [^6]: Pichai, S. (2024). Alphabet Q3 2024 決算報告。Googleの新規コードの25%以上がAI生成であり、すべてエンジニアのレビューと承認を経てコミットされると報告。 https://abc.xyz/2024-q3-earnings-call/
 [^7]: Vogels, W. (2025). AWS re:Invent 2025 closing keynote "The Renaissance Developer." AI生成コードの速度が人間の理解速度を超えることで「検証負債（verification debt）」が生じると警告。 https://aws.amazon.com/blogs/aws/aws-weekly-roundup-aws-reinvent-keynote-recap-on-demand-videos-and-more-december-8-2025/
 [^8]: Jain, A. (2025). "How to Kill the Code Review." Latent.Space. AI時代には従来のコードレビューは現実的でなくなり、仕様定義と自動検証で品質を確保すべきとの主張。 https://www.latent.space/p/reviews-dead
 [^9]: Poll, D. (2026). "Code Review Is Not About Catching Bugs." コードレビューの目的はバグ発見ではなく、変更が製品として価値があるか判断する意思決定プロセスとの主張。 https://www.davidpoll.com/2026/02/code-review-is-not-about-catching-bugs/
 [^10]: Chelsea Troyはこれを「コンテキスト転送（context transfer）」と呼び、レビューの成功指標を「原作者が不在になっても開発を引き継げる状態の達成」と定義した。Naurのメンタルモデル共有と直接対応する概念。 https://chelseatroy.com/2019/12/18/reviewing-pull-requests/
 [^11]: [^2] [^3] を参照している日本語解説記事。コードレビューは「バグ発見」ではなく「知識共有とチーム協調」が本質であり、コミュニケーションの工夫で「学び」の文化へ転換できるとする内容。 https://zenn.dev/rakuten_tech/articles/code_review_antipatterns
+[^12]: Winters, T., Manshreck, T. & Wright, H. (2020). "Software Engineering at Google: Lessons Learned from Programming Over Time." O'Reilly Media. Chapter 9 "Code Review" にて、教育的コメントはコードの変更要求とは区別し「FYI」等で明示すべきとされている。 https://abseil.io/resources/swe-book/html/ch09.html
+[^13]: Greiler, M. (2019). "Don't Teach During Code Reviews." レビュー中に意図的に曖昧な質問を投げかける「教育的」アプローチは、マスターと見習いの階級関係を生みプロセスを遅延させると指摘。直接的で具体的なフィードバックを推奨。 https://www.michaelagreiler.com/teach-during-code-reviews/
+[^14]: Glyph (2026). "What Is Code Review For?" コードレビューの役割を(1)プロセスの失敗検出、(2)組織文化への統合、(3)文化の活性化の3つに整理。バグ検出は自動ツールに委ね、LLM生成コードは人間と異なり学習しないためより慎重に扱う必要があると指摘。 https://blog.glyph.im/2026/03/what-is-code-review-for.html
