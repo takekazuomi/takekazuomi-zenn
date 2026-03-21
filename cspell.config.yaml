@@ -4,19 +4,24 @@ dictionaryDefinitions: []
 dictionaries: []
 words:
   - Addy
+  - aicoding
+  - Bacchelli
   - baleenstudio
   - Birgitta
   - Böckeler
   - Borland
   - Brumme
   - CLSID
+  - codereview
   - Collina
   - COMCTL
+  - Czerwonka
   - Edsger
   - evals
   - Gloaguen
   - Hanselman
   - Hyrum
+  - ICSE
   - jgraph
   - liba
   - libb
@@ -32,9 +37,11 @@ words:
   - MSVCR
   - MSVCRT
   - muxer
+  - Naur
   - nielstron
   - Osmani
   - pamelafox
+  - Pichai
   - Pratschner
   - prezto
   - pyenv
@@ -44,6 +51,7 @@ words:
   - Thoughtworks
   - unobtanium
   - Upsun
+  - Vogels
   - vtable
   - Willison
   - XCOPY
