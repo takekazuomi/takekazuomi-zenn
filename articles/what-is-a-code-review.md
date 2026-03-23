@@ -3,7 +3,8 @@ title: "コードレビューとは何か"
 emoji: "🔍"
 type: "idea"
 topics: ["ai", "aicoding", "コードレビュー"]
-published: true
+published: false
+publication_name: baleenstudio
 ---
 
 前の記事[^1]では、AIコーディングの原則を整理した。責任は人間が取る、そのためにドキュメントが重要であり、それは人間とAIの両方の架け橋であると書いた。一方で、AIコーディングではコードレビューは不要、あるいは不可能だという声がある[^8]。「人間が書いたコードは2025年に死んだ。コードレビューは2026年に死ぬ」と。
