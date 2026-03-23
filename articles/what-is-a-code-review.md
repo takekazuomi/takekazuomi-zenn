@@ -3,7 +3,7 @@ title: "コードレビューとは何か"
 emoji: "🔍"
 type: "idea"
 topics: ["ai", "aicoding", "コードレビュー"]
-published: false
+published: true
 publication_name: baleenstudio
 ---
 
