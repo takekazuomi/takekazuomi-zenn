@@ -5,6 +5,7 @@ dictionaries: []
 words:
   - Addy
   - aicoding
+  - Allstacks
   - Bacchelli
   - baleenstudio
   - Birgitta
@@ -18,9 +19,15 @@ words:
   - Czerwonka
   - Edsger
   - evals
+  - Floridi
+  - Gebru
+  - Glenford
   - Gloaguen
   - Greiler
+  - Grokipedia
   - Hanselman
+  - Harnad
+  - Hashimoto
   - Hyrum
   - ICSE
   - jgraph
@@ -34,6 +41,7 @@ words:
   - Manshreck
   - martinfowler
   - Matteo
+  - METR
   - monomorphization
   - MSVC
   - MSVCR
@@ -43,14 +51,20 @@ words:
   - nielstron
   - Osmani
   - pamelafox
+  - Parnas
+  - Physica
   - Pichai
   - Pratschner
   - prezto
   - pyenv
+  - regenerable
   - runtimeconfig
   - SONAME
+  - Stevan
   - Strahl
   - Thoughtworks
+  - Tohmé
+  - Tornhill
   - unobtanium
   - Upsun
   - Vogels
