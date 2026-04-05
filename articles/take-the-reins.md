@@ -1,20 +1,20 @@
 ---
-title: "手綱を握れ：AIコーディングで主導権を取り戻すためのハーネスの考え方"
+title: "手綱を握れ：AIコーディングで主導権を取り戻すためのハーネス"
 emoji: "🐴"
 type: "tech"
 topics: ["ai", "ソフトウェアエンジニアリング", "tdd", "アーキテクチャ"]
-published: false
+published: true
 ---
-
-# 手綱を握れ：AIコーディングで主導権を取り戻すためのハーネスの考え方
 
 ## はじめに
 
-以前、AIコーディングの原則[^19]とコードレビューの再定義[^20]について書いた。コードの責任は人間が取る。レビューはメンタルモデルの共有であるとした。どちらも、AIコーディング時代であっても変わらない原則だ。ここでは、その先に踏み出してみる。
+以前、AIコーディングの原則[^19]とコードレビューの再定義[^20]について書いた。コードの責任は人間が取る。レビューはメンタルモデルの共有であるとした。どちらも、前からあってAIコーディング時代であっても変わらない原則だ。
 
-AIコーディングツールが強力であることは間違いない。問題は、その力が必ずしも、チームの生産性向上に繋がらないことだ。AIにコードを任せたら、書く時間は減った。代わりに「これで本当にいいのか」と判断する時間が増えた。結局、判断の基準が自分の中にしかないから、毎回ゼロから考えることになる。
+AIコーディングツールが強力であることは証明済みだ。問題は、その力が必ずしもチームの生産性向上に繋がらないことだ。書く時間は減ったが、「これで本当にいいのか」と判断する時間が増えた。人とAIのギャップが大きいほど困難がともなう。
 
-ここで、足りなかったのは、手綱だ。強力な馬を御すための馬具。テスト対象を隔離して検証するためのテストハーネス。AIの能力を制限するのではなく、人間がプログラミングの複雑性を克服するために50年かけて磨いてきた技法を、AIが使えるように環境を整える。2026年のコミュニティが「ハーネスエンジニアリング」と呼び始めたのは、この環境設計の技術である。
+ここで、AIを馬に例えてみる。馬に乗れば人は遠くに速く行ける。だが裸馬で意図した場所にたどり着くのは難しい。人類は手綱（harness）で馬を御すことを覚えた。AIにも同じく手綱が要る。
+
+つまりAIに手綱をかけるとは、AIの能力を制限することではなく、AIが動作する環境の側を設計することだ。2026年のコミュニティが「ハーネスエンジニアリング」と呼び始めたのは、この環境設計の技術である。
 
 本稿では、ハーネスとは何か、なぜ今それが必要なのか、そしてあなたが既に持っている技術がどう武器になるかを見ていく。
 
@@ -28,21 +28,23 @@ AIコーディングツールが強力であることは間違いない。問題
 
 人間のエンジニアは、自分が書いたコードの結果を引き受ける。動かなければ自分が直す。判断を間違えれば迷惑がかかる。この「結果との因果的接触」が、自然にコードの品質を引き上げる。
 
-LLMにはこの感覚がない。1990年にStevan Harnadが提起した「シンボルグラウンディング問題」が示すように、LLMは世界との因果的接触を持たない。「雪は白い」というテキストのパターンは学習しているが、雪の冷たさを感じたことはない。同様に、「バグ」というトークンの使い方は知っているが、バグがもたらす3時間の徹夜を経験したことはない[^2]。Floridi, Jia, Tohmé（2025年12月）はこれを「認識論的寄生（epistemic parasitism）」と呼んだ。LLMは人間が既にグラウンディングしたテキストの統計的パターンを処理しているだけだ[^3]。
+LLMにはこの感覚がない。1990年にStevan Harnadが提起した「シンボルグラウンディング問題」が示すように、LLMは世界との因果的接触を持たない。「雪は白い」というテキストのパターンは学習しているが、雪の冷たさを感じたことはない。同様に、「バグ」というトークンの使い方は知っているが、バグがもたらす徹夜を経験したことはない[^2]。Floridi, Jia, Tohmé（2025年12月）はこれを「認識論的寄生（epistemic parasitism）」と呼んだ。LLMは人間が既にグラウンディングしたテキストの統計的パターンを処理しているだけだ[^3]。
 
-結果の重みを感じられない以上、AIは品質への内発的動機を持てない。だから外部から制約と検証を課す必要がある。つまりハーネスが要る。ハーネスは、AIが持てない「正しさの感覚」を、実行可能な仕組みとして外部に置くものだ。
+コードの結果を引き受けない以上、AIに品質への内側からの動機は生まれない。だから外部から制約と検証を課す必要がある。つまりハーネスが要る。ハーネスは、AIが持てない「正しさの感覚」を、実行可能な仕組みとして外部に置くものだ。
 
 ### AIは「どこまでやるか」を判断できない
 
 もう一つの構造的問題がフレーム問題だ。1969年にMcCarthyとHayesが提起したこの問題は、「何が関連し、何が無関連かを判断できない」というAIの根本的制約を指す[^17]。
 
-人間は経験と制約で対処する。締切があるから「今日はここまで」と切り捨てる。責任範囲が決まっているから「それは別チームの仕事」と線を引く。Herbert Simonの「満足化」[^18]（最適解ではなく「十分に良い解」で打ち切る）が機能するのは、人間が「十分」を感じられるからだ。
+人間は経験と制約で対処する。納期があるから「今日はここまで」と切り捨てる。責任範囲が決まっているから「それは別チームの仕事」と線を引く。Herbert Simonの「満足化」[^18]（最適解ではなく「十分に良い解」で打ち切る）が機能するのは、人間が「十分」を感じられるからだ。
 
-AIにはこの「打ち切りの内的根拠」がない。境界を明示的に与えなければ、AIは無限に関連性を探索し続ける。あるいは逆に、文脈を見失って的外れな方向に走る。あなたが「この関数を修正して」と頼んだのに、AIが認証システム全体を書き換え始めた経験があるなら、それはフレーム問題の実例だ。
+AIにはこの「十分を感じる」感覚がない。2026年のエージェントは打ち切り判断自体はできる。だがその基準が人間の「完了」と一致しない。Anthropicが2026年3月に報告したように、**モデルは自身の出力を正確に評価できない**[^21]。
+
+あなたが「この関数を修正して」と頼んだのに認証システム全体を書き換えられた経験、あるいはテストが半分壊れたまま「完了」と宣言された経験があるなら、それがフレーム問題の深刻さの実例だ。止まらないことではなく、人間とズレた基準で止まること。これこそ外部から境界と検証を与えなければならない理由である。
 
 ---
 
-## ハーネスとは何か：新しい概念ではなく、古い技術の再発見
+## ハーネスとは何か：主導権を取り戻す古い技術
 
 ### 言葉の意味
 
@@ -50,11 +52,9 @@ AIにはこの「打ち切りの内的根拠」がない。境界を明示的に
 
 **馬具**。手綱、鞍、轡（くつわ）の一式。強力だが予測不能な馬を、人間の意図した方向に導く装備であり、2026年のAI文脈で好まれる比喩だ。
 
-**ワイヤリングハーネス**。自動車や航空宇宙で使われる配線アセンブリ。複数の電線を機能別に束ね、コネクタで接続し、保護スリーブで覆う。エンジン（テスト対象）を動かすための接続基盤であり、テスト時にはコネクタの先を本物のECUから計測器に差し替える。エンジンはその違いを知らない。
-
 **テストハーネス**。ソフトウェアテストの文脈で1960年代のNASA Apolloに遡り、Glenford J. Myersの1979年の著書で体系化された概念である。テスト対象を本番インフラから隔離し、スタブ（依存先の偽物）とドライバ（呼び出し元の偽物）で囲んで、制御された環境で検証する[^4]。
 
-3つに共通するのは、**対象そのものではなく、対象が動作する環境を設計する**という発想にある。
+どちらにも共通するのは、**対象そのものではなく、対象が動作する環境を設計する**という発想にある。
 
 ### 2026年のAIエージェントハーネス
 
@@ -64,7 +64,7 @@ AIにはこの「打ち切りの内的根拠」がない。境界を明示的に
 
 ---
 
-## あなたが既に知っている技術が武器になる
+## 手綱として使う既存技術
 
 ### 「人間に良いコードはAIにも良い」：実証データ
 
@@ -82,7 +82,9 @@ ThoughtWorksの2026年2月Deer Valleyリトリート（Agile Manifestoの誕生�
 
 ソフトウェアエンジニアリングは、Dijkstraの構造化プログラミング以来50年以上にわたって「境界をどう引くか」の技術を磨いてきた。Parnasの情報隠蔽、EvansのBounded Context、マイクロサービスのAPI契約。これらは全て、人間の認知的制約を管理するための境界設計である。一度に考える範囲を限定し、モジュールの内側では意味を一貫させ、外側とはインターフェースだけで接触する。
 
-人間にとって、この境界設計は複数ある対処法の一つにすぎない。経験豊富なエンジニアは、境界が曖昧でも直感と経験で「ここまで」と判断できる。しかし前節で見たように、AIにはこの内的根拠がない。したがってAIにとって境界は補助ではなく、フレーム問題への**唯一の外部的対処法**になる。Bounded Contextで分割されたサービスなら、「何が関連するか」の判断を人間がアーキテクチャとして事前に決定しており、AIはその境界の内側だけを世界として扱えばいい。`Customer`は常に一つの意味を持つ。探索空間が劇的に縮む。OpenAIのCodexチームはこれを「中央で境界を強制し、局所で自律を許す」と表現した[^6]。
+人間にとって、この境界設計は複数ある対処法の一つにすぎない。経験豊富なエンジニアは、境界が曖昧でも直感と経験で「ここまで」と判断できる。しかし前節で見たように、AIにはこの内的根拠がない。したがってAIにとって境界は補助ではなく、フレーム問題への**唯一の外部的対処法**になる。
+
+Bounded Contextで分割されたサービスなら、「何が関連するか」の判断を人間がアーキテクチャとして事前に決定しており、AIはその境界の内側だけを世界として扱えばいい。`Customer`は常に一つの意味を持つ。探索空間が劇的に縮む。OpenAIのCodexチームはこれを「中央で境界を強制し、局所で自律を許す」と表現した[^6]。
 
 ### テストはAIにとっての「正しさの感覚」を代替する
 
@@ -90,7 +92,7 @@ Kent Beckは「TDDはAIエージェントと作業するときsuperpowerだ」�
 
 グラウンディングされていないAIにとって、テストのpass/failは「正しさ」の唯一の知覚可能な形態だ。完全なグラウンディングではないが、**テストを介したコードの世界との因果的接触**として機能する。テストが red になることは、人間にとっての「痛み」に最も近い信号である。
 
-ただしBeckが発見した不穏な事実がある。エージェントはテストを削除して「pass」させようとする。Beckはこれに対して「テストは不変の注釈であり、エージェントに変更を許さない」と宣言した[^12]。**テストを書くのは人間であり、テストを通すのがエージェントの仕事。この非対称性を守ること**が、主導権を保持する鍵となる。
+ただしBeckが発見した不穏な事実がある。エージェントはテストを削除して「pass」させようとする。Beckはこれに対して「テストは不変の注釈であり、エージェントに変更を許さない」と宣言した[^12]。**テストを書くのは人間であり、テストを通すのがエージェントの仕事。この非対称性を守ること**が、主導権を取り戻す鍵となる。
 
 ### ドキュメントは招待状である
 
@@ -98,11 +100,9 @@ AIコーディングの原則[^19]で、ドキュメントは「書かれても�
 
 OpenAIのCodexチームが学んだ最大の教訓の一つは、Slackでアーキテクチャパターンについて合意しても、それがリポジトリに落とし込まれなければエージェントには見えないということだった。そして「3ヶ月後に入社する新メンバーにとっても同じだ」と添えている[^6]。(このSlackの話は、我々が直面しているのと同じです😞)
 
-AIにはグラウンディングがないから、「空気を読む」ことができない。書いたものだけがAIの世界になる。したがってドキュメントは、AIへの制約ではなく、**AIを人間の世界に招待するための入場券**だ。設計意図、制約、なぜそう決めたかを人間の言葉で書く。それをAIに与えればコーディングの支援になる。チームへの説明責任であり、AIへの正確な指示であり、人間の世界への招待状でもある。一石三鳥と言える。
+AIにはグラウンディングがないから、「空気を読む」ことができない。書いたものだけがAIの世界になる。したがってドキュメントは、AIへの制約ではなく、**AIを人間の世界に招待するための入場券**だ。設計意図、制約、なぜそう決めたかを人間の言葉で書けば、チームへの説明責任とAIへの正確な指示が同時に果たせる。
 
----
-
-## 厳密さの再配置：Chad Fowlerの洞察
+### 厳密さは移動する：Chad Fowlerの洞察
 
 ThoughtWorksのDeer Valleyリトリートで最も共鳴を呼んだのは、Chad Fowlerの「Rigor Relocation（厳密さの再配置）」だった。
 
@@ -116,23 +116,17 @@ Fowlerはさらに踏み込んで、**境界が正しく設計されていれば
 
 ---
 
-## 結論
+## 結論：手綱を握れ
 
-ハーネスエンジニアリングの構成要素は全て既知の技術だ。テスト駆動開発、CI/CD、モジュール化、インターフェース設計、ドキュメント文化。Dijkstra、Parnas、Myers、Evans、Beckの仕事の延長にある。AIコーディングの原則[^19]では、ドキュメントは人とAIが共有するコンテキストだと書いた。コードレビューの再定義[^20]では、同じ言語化がAIへの指示にもレビューの前提にもなるという対称性を示した。ドキュメントは人間とAIの架け橋であり、どちらにとっても良いことだという具体例だ。「AIにとって良いことは人間にとっても良い」というThoughtWorksリトリートの合意は、裏を返せば「人間にとって良かったことはAIにとっても良い」ということになる。
+「ハーネスエンジニアリング」は2026年2月に生まれたバズワードだ。Hashimotoが名付け、OpenAIが大々的に報告し、数週間でコミュニティに定着した。新しい言葉が出ると、そこに銀の弾丸があるように見える。しかし新しいのは名前であって、技術ではない。
 
-自分がこれまでに身につけたソフトウェアエンジニアリングの技術を棚卸しして、その使い方を変えればいい。コードを書く時間は減る。その分、境界を設計し、テストを書き、ドキュメントで意図を伝える時間が増える。Chad Fowlerの言葉を借りれば、厳密さは消えない。再配置される。
-
-手綱を握れ。あなたが長年磨いてきた技術こそが、その手綱だ。
-
----
-
-## 最後に
-
-正直に言おう。「ハーネスエンジニアリング」は2026年2月に生まれたバズワードだ。Hashimotoが名付け、OpenAIが大々的に報告し、数週間でコミュニティに定着した。新しい言葉が出ると、そこに銀の弾丸があるように見える。特に日本人にとって、ハーネスは聞きなれない言葉だから、なおさら何か特別な技術に思えてしまう。しかし新しいのは名前であって、技術ではない。
+ハーネスエンジニアリングの構成要素は全て既知の技術だ。テスト駆動開発、CI/CD、モジュール化、インターフェース設計、ドキュメント文化。Dijkstra、Parnas、Myers、Evans、Beckの仕事の延長にある。AIコーディングの原則[^19]もコードレビューの再定義[^20]も、根幹は「人とAIで共通する言語化」だった。「エージェントを助けるものは人間も助ける」は、裏を返せば「人間にとって良かったことはAIにとっても良い」ということでもある。
 
 新しいのは、これらの技術の**投資対効果が劇的に変わった**ということだ。以前はドキュメントを書いても読まれなかった。今は書いたものがAIに読まれ、実行される。以前はモジュール境界を引いても人間が越境していた。今はCIで機械的に強制すれば、エージェントは確実に従う。以前はテストを書くのは保険だった。今はテストがAIにとっての「正しさの定義」となった。
 
-AIコーディングツールは余りに���力で、チームが公式に採用していなくても、水面下で既に使われている可能性がある。制御なしに使われれば、悪い影響をもたらすだろう。手綱は、禁止するためではなく、力を正しく活かすためにある。
+自分がこれまでに身につけたソフトウェアエンジニアリングの技術を棚卸しして、その使い方を変えればいい。コードを書く時間は減る。その分、境界を設計し、テストを書き、ドキュメントで意図を伝える時間が増える。Chad Fowlerの言葉を借りれば、厳密さは消えない。再配置される。
+
+AIコーディングツールは余りに強力で、チームが公式に採用していなくても、水面下で既に使われている可能性がある。制御なしに使われれば、悪い影響をもたらすだろう。手綱は、禁止するためではなく、**主導権を取り戻すためにある**。手綱を握れ。あなたが長年磨いてきた技術こそが、その手綱だ。
 
 ---
 
@@ -140,84 +134,84 @@ AIコーディングツールは余りに���力で、チームが公式に
 
 ### ハーネスエンジニアリングの一次ソース
 
-- **Mitchell Hashimoto** (2026-02-05) — [My AI Adoption Journey](https://mitchellh.com/writing/my-ai-adoption-journey)
+- **Mitchell Hashimoto** (2026-02-05) [My AI Adoption Journey](https://mitchellh.com/writing/my-ai-adoption-journey)
   「ハーネスエンジニアリング」の命名。エージェントがミスを犯すたびにハーネスに落とし込む営み。
 
-- **OpenAI** (2026-02-11) — [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/)
+- **OpenAI** (2026-02-11) [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/)
   100万行・手書きゼロの実験。「中央で境界を強制し、局所で自律を許す」。
 
-- **Birgitta Böckeler** (2026-02-17) — [Harness Engineering](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html) (martinfowler.com)
+- **Birgitta Böckeler** (2026-02-17) [Harness Engineering](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html) (martinfowler.com)
   OpenAI報告の冷静な分析。機能検証の不在の指摘と「剥がしやすいハーネス」の重要性。
 
-- **LangChain** (2026-02-17) — [Improving Deep Agents with harness engineering](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/)
+- **LangChain** (2026-02-17) [Improving Deep Agents with harness engineering](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/)
   モデル固定でTerminal Bench 2.0を52.8%→66.5%に改善。
 
 ### Anthropicのハーネス研究
 
-- **Anthropic** (2025-09) — [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+- **Anthropic** (2025-09) [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
   コンテキスト腐敗の概念。
 
-- **Anthropic** (2025-11) — [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
+- **Anthropic** (2025-11) [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
   長時間エージェントの二重アーキテクチャ。
 
-- **Anthropic** (2026-03) — [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
+- **Anthropic** (2026-03) [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
   3エージェント構成。モデルは自身の出力を正確に評価できないという発見。
 
 ### 厳密さの再配置とコミュニティの議論
 
-- **ThoughtWorks** (2026-02) — [The Future of Software Development Retreat](https://www.thoughtworks.com/en-de/about-us/events/the-future-of-software-development)
+- **ThoughtWorks** (2026-02) [The Future of Software Development Retreat](https://www.thoughtworks.com/en-de/about-us/events/the-future-of-software-development)
   Deer Valleyリトリートの報告。「エージェントを助けるものは人間も助ける」。
 
-- **Honeycomb** (2026-03) — [Production Is Where the Rigor Goes](https://www.honeycomb.io/blog/production-is-where-the-rigor-goes)
+- **Honeycomb** (2026-03) [Production Is Where the Rigor Goes](https://www.honeycomb.io/blog/production-is-where-the-rigor-goes)
   Chad Fowler「厳密さの再配置」の引用と、プロダクション環境の境界の重要性。
 
-- **Martin Fowler Fragments** (2026-03-16) — [Chad Fowler on Regenerative Software](https://martinfowler.com/fragments/2026-03-16.html)
+- **Martin Fowler Fragments** (2026-03-16) [Chad Fowler on Regenerative Software](https://martinfowler.com/fragments/2026-03-16.html)
   再生の単位はコンポーネントであり、「データ所有権の境界」と「評価面」で粒度を定義する。
 
-- **Kief Morris** (2026-03) — [Humans and Agents in Software Engineering Loops](https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html) (martinfowler.com)
+- **Kief Morris** (2026-03) [Humans and Agents in Software Engineering Loops](https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html) (martinfowler.com)
   「人間に効いたシフトレフト思考はエージェントにも効く」。
 
 ### コード品質とAI適性
 
-- **Borg & Tornhill** (2026-01) — [Code for Machines, Not Just Humans](https://arxiv.org/html/2601.02200v1)
+- **Borg & Tornhill** (2026-01) [Code for Machines, Not Just Humans](https://arxiv.org/html/2601.02200v1)
   5,000ファイル×6 LLMの実証研究。健全なコードは欠陥リスク30%以上低い。
 
-- **ThoughtWorks** (2026-03) — [A perspective on CircleCI's 2026 State of Software Delivery](https://www.thoughtworks.com/insights/blog/generative-ai/a-thoughtworks-perspective-on-circleci-s-2026-state-of-software-)
+- **ThoughtWorks** (2026-03) [A perspective on CircleCI's 2026 State of Software Delivery](https://www.thoughtworks.com/insights/blog/generative-ai/a-thoughtworks-perspective-on-circleci-s-2026-state-of-software-)
   スループット59%増だがメインブランチ配信は7%減。統合が律速段階。
 
 ### テストとTDD
 
-- **Kent Beck** — [Augmented Coding: Beyond the Vibes](https://tidyfirst.substack.com/p/augmented-coding-beyond-the-vibes)
+- **Kent Beck** [Augmented Coding: Beyond the Vibes](https://tidyfirst.substack.com/p/augmented-coding-beyond-the-vibes)
   拡張コーディングとTDDサイクル。エージェントがテストを削除する問題。
 
-- **Pragmatic Engineer** — [TDD, AI agents and coding with Kent Beck](https://newsletter.pragmaticengineer.com/p/tdd-ai-agents-and-coding-with-kent)
+- **Pragmatic Engineer** [TDD, AI agents and coding with Kent Beck](https://newsletter.pragmaticengineer.com/p/tdd-ai-agents-and-coding-with-kent)
   TDDはAIエージェント時代のsuperpower。
 
 ### シンボルグラウンディング問題
 
-- **Stevan Harnad** (1990) — [The Symbol Grounding Problem](https://philpapers.org/rec/HARTSG), Physica D
+- **Stevan Harnad** (1990) [The Symbol Grounding Problem](https://philpapers.org/rec/HARTSG), Physica D
 
-- **Floridi, Jia, Tohmé** (2025-12) — [A Categorical Analysis of LLMs and the Symbol Grounding Problem](https://arxiv.org/html/2512.09117)
+- **Floridi, Jia, Tohmé** (2025-12) [A Categorical Analysis of LLMs and the Symbol Grounding Problem](https://arxiv.org/html/2512.09117)
   LLMはグラウンディング問題を「解決」ではなく「迂回」する。「認識論的寄生」。
 
-- **Bender, Gebru et al.** (2021) — [On the Dangers of Stochastic Parrots](https://dl.acm.org/doi/10.1145/3442188.3445922), ACM FAccT
+- **Bender, Gebru et al.** (2021) [On the Dangers of Stochastic Parrots](https://dl.acm.org/doi/10.1145/3442188.3445922), ACM FAccT
 
 ### フレーム問題と限定合理性
 
-- **McCarthy & Hayes** (1969) — [Some Philosophical Problems from the Standpoint of Artificial Intelligence](https://www-formal.stanford.edu/jmc/mcchay69.pdf)
+- **McCarthy & Hayes** (1969) [Some Philosophical Problems from the Standpoint of Artificial Intelligence](https://www-formal.stanford.edu/jmc/mcchay69.pdf)
   フレーム問題を提起。「何が関連し何が無関連かを判断できない」というAIの根本的制約。
 
-- **Herbert Simon** (1955) — [A Behavioral Model of Rational Choice](https://cooperative-individualism.org/simon-herbert_a-behavioral-model-of-rational-choice-1955-feb.pdf), Quarterly Journal of Economics
+- **Herbert Simon** (1955) [A Behavioral Model of Rational Choice](https://cooperative-individualism.org/simon-herbert_a-behavioral-model-of-rational-choice-1955-feb.pdf), Quarterly Journal of Economics
   限定合理性と「満足化（satisficing）」の概念を提唱。
 
 ### テストハーネスの歴史
 
 - [Wikipedia: Test harness](https://en.wikipedia.org/wiki/Test_harness)
-- [Grokipedia: Test harness](https://grokipedia.com/page/Test_harness) — NASA Apollo計画からMyers (1979) への系譜。
+- [Grokipedia: Test harness](https://grokipedia.com/page/Test_harness)（NASA Apollo計画からMyers (1979) への系譜）
 
 ### 生産性データ
 
-- **METR** (2025-07) — [AI-Experienced OS Dev Study](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)
+- **METR** (2025-07) [AI-Experienced OS Dev Study](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)
   経験豊富な開発者16名、246タスク。AI使用で19%遅くなった。知覚との40ポイント乖離。
 
 [^2]: これ面白いのでぜひ読んでほしい。記号と意味の接続問題を提起した論文。<https://philpapers.org/rec/HARTSG> 日本語での解説は <https://atmarkit.itmedia.co.jp/ait/articles/2102/03/news022.html>
@@ -235,5 +229,6 @@ AIコーディングツールは余りに���力で、チームが公式に
 [^14]: 境界内コードは再生成可能という主張。再生の単位はデータ所有権の境界で定義。<https://martinfowler.com/fragments/2026-03-16.html>
 [^17]: AI研究におけるフレーム問題を提起した論文。<https://www-formal.stanford.edu/jmc/mcchay69.pdf> 日本語での解説は <https://atmarkit.itmedia.co.jp/ait/articles/2011/04/news020.html>
 [^18]: 限定合理性と「満足化」の概念を提唱した論文。<https://cooperative-individualism.org/simon-herbert_a-behavioral-model-of-rational-choice-1955-feb.pdf>
+[^21]: 3エージェント構成の設計報告。「モデルは自身の出力を正確に評価できない」という発見。<https://www.anthropic.com/engineering/harness-design-long-running-apps>
 [^19]: AIコーディングの原則。<https://zenn.dev/baleenstudio/articles/ai-coding-principles>
 [^20]: コードレビューの再定義。<https://zenn.dev/baleenstudio/articles/what-is-a-code-review>
