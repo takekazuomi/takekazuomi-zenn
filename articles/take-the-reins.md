@@ -68,7 +68,7 @@ AIにはこの「十分を感じる」感覚がない。2026年のエージェ�
 
 ### 「人間に良いコードはAIにも良い」：実証データ
 
-Borg & Tornhill（CodeScene）の研究 "Code for Machines, Not Just Humans"（2026年1月）は、5,000のPythonファイルを6つのLLMでリファクタリングし、**人間のために最適化されたコード品質指標（CodeHealth）がAIの成功率と有意に相関する**ことを実証した。不健全なコードでは欠陥リスクが30%以上高い。Tornhillの言葉で言えば「AIの時代において、健全なコードはもはやオプションではない」[^9]。
+Borg & Tornhill（CodeScene）の研究 "Code for Machines, Not Just Humans"（2026年1月）は、5,000のPythonファイルを6つのLLMでリファクタリングし、**人間のために最適化されたコード品質指標（CodeHealth）がAIの成功率と有意に相関する**ことを実証した。不健全なコードでは、リファクタリング失敗率が最良ケースで約30%高い。Tornhillの言葉で言えば「AIの時代において、健全なコードはもはやオプションではない」[^9]。
 
 ThoughtWorksの2026年2月Deer Valleyリトリート（Agile Manifestoの誕生地で開催された）でも、この原則が合意された。
 
@@ -141,7 +141,7 @@ AIコーディングツールは余りに強力で、チームが公式に採用
   100万行・手書きゼロの実験。「中央で境界を強制し、局所で自律を許す」。
 
 - **Birgitta Böckeler** (2026-02-17) [Harness Engineering](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html) (martinfowler.com)
-  OpenAI報告の冷静な分析。機能検証の不在の指摘と「剥がしやすいハーネス」の重要性。
+  「Agent = Model + Harness」の定式化。機能検証用のハーネスは発展途上であり、人間の関与を最重要箇所へ方向付けるべきと主張。
 
 - **LangChain** (2026-02-17) [Improving Deep Agents with harness engineering](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/)
   モデル固定でTerminal Bench 2.0を52.8%→66.5%に改善。
@@ -189,12 +189,12 @@ AIコーディングツールは余りに強力で、チームが公式に採用
 
 ### シンボルグラウンディング問題
 
-- **Stevan Harnad** (1990) [The Symbol Grounding Problem](https://philpapers.org/rec/HARTSG), Physica D
+- **Stevan Harnad** (1990) [The Symbol Grounding Problem](https://users.ecs.soton.ac.uk/harnad/Papers/Harnad/harnad90.sgproblem.html), Physica D
 
 - **Floridi, Jia, Tohmé** (2025-12) [A Categorical Analysis of LLMs and the Symbol Grounding Problem](https://arxiv.org/html/2512.09117)
   LLMはグラウンディング問題を「解決」ではなく「迂回」する。「認識論的寄生」。
 
-- **Bender, Gebru et al.** (2021) [On the Dangers of Stochastic Parrots](https://dl.acm.org/doi/10.1145/3442188.3445922), ACM FAccT
+- **Bender, Gebru et al.** (2021) [On the Dangers of Stochastic Parrots](https://faculty.washington.edu/ebender/papers/Bender-NE-ExpAI.pdf), ACM FAccT
 
 ### フレーム問題と限定合理性
 
@@ -214,12 +214,12 @@ AIコーディングツールは余りに強力で、チームが公式に採用
 - **METR** (2025-07) [AI-Experienced OS Dev Study](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)
   経験豊富な開発者16名、246タスク。AI使用で19%遅くなった。知覚との40ポイント乖離。
 
-[^2]: これ面白いのでぜひ読んでほしい。記号と意味の接続問題を提起した論文。<https://philpapers.org/rec/HARTSG> 日本語での解説は <https://atmarkit.itmedia.co.jp/ait/articles/2102/03/news022.html>
+[^2]: これ面白いのでぜひ読んでほしい。記号と意味の接続問題を提起した論文。<https://users.ecs.soton.ac.uk/harnad/Papers/Harnad/harnad90.sgproblem.html> 日本語での解説は <https://atmarkit.itmedia.co.jp/ait/articles/2102/03/news022.html>
 [^3]: LLMは人間がグラウンディング済みのテキストに「認識論的寄生」しているという分析。<https://arxiv.org/html/2512.09117>
 [^4]: テストハーネスの概念はNASA Apollo計画に遡り、Myers (1979) で体系化された。<https://en.wikipedia.org/wiki/Test_harness> <https://grokipedia.com/page/Test_harness>
 [^5]: 「ハーネスエンジニアリング」を命名したブログ記事。<https://mitchellh.com/writing/my-ai-adoption-journey>
 [^6]: 100万行超を手書きゼロで構築し、境界設計とドキュメントの重要性を報告。<https://openai.com/index/harness-engineering/>
-[^7]: OpenAI報告の分析。機能検証の不在と「剥がしやすいハーネス」の重要性を指摘。<https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html>
+[^7]: 「Agent = Model + Harness」の定式化。機能検証用のハーネスは発展途上と指摘。<https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html>
 [^8]: モデル固定でTerminal Bench 2.0を52.8%→66.5%に改善。<https://blog.langchain.com/improving-deep-agents-with-harness-engineering/>
 [^9]: 5,000ファイル×6 LLMの実証研究。コード品質がAIリファクタリング成功率と有意に相関。<https://arxiv.org/html/2601.02200v1>
 [^10]: Deer Valleyリトリートの報告。「エージェントを助けるものは人間も助ける」。<https://www.thoughtworks.com/en-de/about-us/events/the-future-of-software-development>
