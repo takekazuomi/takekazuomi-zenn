@@ -1,0 +1,109 @@
+<mxfile host="65bd71144e">
+    <diagram id="harness-overview" name="ハーネス配置図">
+        <mxGraphModel dx="960" dy="520" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="960" pageHeight="540" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+
+                <!-- ===== 上部：(1)E2Eと(2)文書（Flutter周辺の環境） ===== -->
+                <mxCell id="h2-doc" value="&lt;b&gt;(2) リポジトリ文書&lt;/b&gt;&lt;br&gt;AGENTS.md / ADR / デザインドック" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="100" width="220" height="40" as="geometry"/>
+                </mxCell>
+
+                <!-- ===== システム本体 ===== -->
+
+                <!-- Flutter -->
+                <mxCell id="flutter" value="&lt;b&gt;Flutter&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="180" width="120" height="60" as="geometry"/>
+                </mxCell>
+
+                <!-- BFF -->
+                <mxCell id="bff" value="&lt;b&gt;BFF&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="180" width="100" height="60" as="geometry"/>
+                </mxCell>
+
+                <!-- マイクロサービス群 外枠 -->
+                <mxCell id="ms-container" value="&lt;b&gt;マイクロサービス群&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#6c8ebf;strokeWidth=2;fontSize=12;verticalAlign=top;spacingTop=4;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="130" width="260" height="170" as="geometry"/>
+                </mxCell>
+
+                <!-- 6つのサービス -->
+                <mxCell id="svc-a" value="Svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="575" y="155" width="70" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc-b" value="Svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="655" y="155" width="70" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc-c" value="Svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="735" y="155" width="70" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc-d" value="Svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="575" y="195" width="70" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc-e" value="Svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="655" y="195" width="70" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc-f" value="Svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="735" y="195" width="70" height="32" as="geometry"/>
+                </mxCell>
+
+                <!-- (5) サービス挙動テスト：マイクロサービス群の内側下段 -->
+                <mxCell id="h5-svc" value="&lt;b&gt;(5) サービス挙動テスト&lt;/b&gt; ── 単一サービスの挙動は正しいか" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="575" y="240" width="230" height="32" as="geometry"/>
+                </mxCell>
+
+                <!-- DB -->
+                <mxCell id="db" value="&lt;b&gt;DB&lt;/b&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" parent="1" vertex="1">
+                    <mxGeometry x="870" y="190" width="70" height="60" as="geometry"/>
+                </mxCell>
+
+                <!-- ===== ハーネス：システムブロック間のつなぎ ===== -->
+
+                <!-- (1) アプリE2E：Flutterへの入口（Flutterの上から繋ぐ） -->
+                <mxCell id="h1-e2e" value="&lt;b&gt;(1) アプリE2E&lt;/b&gt;&lt;br&gt;ユーザーの意図が実現されているか" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="40" width="220" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="h1-edge" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#9673a6;dashed=1;" parent="1" source="h1-e2e" target="flutter" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- (2) 文書 → Flutter（環境としてのつなぎ） -->
+                <mxCell id="h2-edge" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#9673a6;dashed=1;" parent="1" source="h2-doc" target="flutter" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- (3) BFF挙動検証：Flutter→BFFのつなぎ -->
+                <mxCell id="h3-bff-edge" value="&lt;b&gt;(3) BFF挙動検証&lt;/b&gt;&lt;br&gt;サービス間の協調&lt;br&gt;は正しいか" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;strokeColor=#9673a6;fontSize=11;labelBackgroundColor=#e1d5e7;labelBorderColor=#9673a6;" parent="1" source="flutter" target="bff" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- (4) Proto契約：BFF→マイクロサービスのつなぎ -->
+                <mxCell id="h4-proto-edge" value="&lt;b&gt;(4) Proto契約&lt;/b&gt;&lt;br&gt;構造と境界は&lt;br&gt;守られているか" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;strokeColor=#9673a6;fontSize=11;labelBackgroundColor=#e1d5e7;labelBorderColor=#9673a6;" parent="1" source="bff" target="ms-container" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- (6) 永続化層：マイクロサービス→DBのつなぎ -->
+                <mxCell id="h6-db-edge" value="&lt;b&gt;(6) 永続化層&lt;/b&gt;&lt;br&gt;データの整合性&lt;br&gt;は守られているか" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;strokeColor=#9673a6;fontSize=11;labelBackgroundColor=#e1d5e7;labelBorderColor=#9673a6;" parent="1" source="ms-container" target="db" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- ===== 横断ハーネス (7)(8) ===== -->
+                <mxCell id="h7-ci" value="&lt;b&gt;(7) CI構造テスト&lt;/b&gt; ── 不変条件は機械的に検証されているか" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="320" width="900" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="h8-otel" value="&lt;b&gt;(8) OTEL観測&lt;/b&gt; ── プロダクションで正しく動いているか" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="354" width="900" height="28" as="geometry"/>
+                </mxCell>
+
+                <!-- ===== 対象外・変更不能 ===== -->
+                <mxCell id="excluded" value="&lt;b&gt;対象外&lt;/b&gt; ── &lt;b&gt;Kafka/Redis（B群）&lt;/b&gt; インターフェース定義の整備が先決 / &lt;b&gt;外部サービス（D群）&lt;/b&gt; Firebase/FCM等、GoMockで隔離" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;verticalAlign=middle;align=left;spacingLeft=8;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="400" width="900" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="immutable" value="&lt;b&gt;変更不能な境界（(4)(6)と同じ扱い）&lt;/b&gt; ── &lt;b&gt;Bicep/IaC（C群）&lt;/b&gt; AGENTS.mdで変更禁止を明記" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;verticalAlign=middle;align=left;spacingLeft=8;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="450" width="900" height="40" as="geometry"/>
+                </mxCell>
+
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

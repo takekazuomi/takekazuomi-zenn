@@ -8,6 +8,7 @@ words:
   - Allstacks
   - Bacchelli
   - baleenstudio
+  - bffpb
   - Birgitta
   - Böckeler
   - Borland
@@ -17,12 +18,16 @@ words:
   - Collina
   - COMCTL
   - Czerwonka
+  - distroless
   - Edsger
+  - Epsilla
   - evals
   - Floridi
+  - forbidigo
   - Gebru
   - Glenford
   - Gloaguen
+  - golangci
   - Greiler
   - Grokipedia
   - Hanselman
@@ -43,29 +48,37 @@ words:
   - Matteo
   - METR
   - monomorphization
+  - morphllm
   - MSVC
   - MSVCR
   - MSVCRT
   - muxer
   - Naur
   - nielstron
+  - orderpb
   - Osmani
+  - Pactflow
   - pamelafox
   - Parnas
   - Physica
   - Pichai
   - Pratschner
   - prezto
+  - Println
+  - protovalidate
   - pyenv
   - regenerable
   - runtimeconfig
   - SONAME
+  - sqlc
   - Stevan
   - Strahl
+  - testinfra
   - Thoughtworks
   - Tohmé
   - Tornhill
   - unobtanium
+  - Uplatz
   - Upsun
   - Vogels
   - vtable
